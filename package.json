@@ -14,9 +14,27 @@
   },
   "devDependencies": {
     "@cucumber/cucumber": "^11.0.1",
-    "@playwright/test": "^1.54.2",
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^25.9.2",
     "dotenv": "^17.2.3",
     "newman": "^6.2.1"
   },
-  "packageManager": "pnpm@9.15.9"
+  "packageManager": "pnpm@9.15.9",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stevenayal/proyect_base_automatizacion.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/stevenayal/proyect_base_automatizacion/issues"
+  },
+  "homepage": "https://github.com/stevenayal/proyect_base_automatizacion#readme"
 }
