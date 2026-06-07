@@ -1,11 +1,11 @@
 # Proyect Base Automatizacion
 
-Base comun para el proyecto grupal que deben entregar los equipos del diplomado QA.
+Base comun para el proyecto grupal que deben entregar los equipos.
 
 Este repositorio existe separado de AIQUAA para que:
 
 - no se mezcle con el producto principal
-- cada equipo pueda forkearlo como punto de partida
+- cada equipo pueda clonarlo como punto de partida
 - el entregable grupal tenga estructura comun
 - BDD, API, UI y CI/CD partan de una misma base
 
@@ -27,6 +27,9 @@ proyect_base_automatizacion/
 |-- README.md
 |-- ENTREGABLES.md
 |-- BACKLOG.md
+|-- package.json
+|-- playwright.config.ts
+|-- .env.example
 |-- features/
 |   |-- auth.feature
 |   `-- checkout.feature
@@ -35,8 +38,15 @@ proyect_base_automatizacion/
 |   `-- local.postman_environment.json
 |-- playwright/
 |   `-- README.md
+|-- tests/
+|   |-- e2e/
+|   |   `-- smoke.spec.ts
+|   `-- bdd/
+|       `-- README.md
 |-- ci/
 |   `-- github-actions-template.yml
+|-- docs/
+|   `-- FLUJO_SEMANAL.md
 |-- evidence/
 |   `-- README.md
 `-- templates/
@@ -78,7 +88,7 @@ proyect_base_automatizacion/
 - `GET /api/v1/labs/test-app/orders`
 - `GET /api/v1/labs/evidence/:sessionId`
 
-## Cohortes sugeridas
+## Perfiles sugeridos de sesion
 
 - `default`
 - `demo`
@@ -87,9 +97,26 @@ proyect_base_automatizacion/
 
 ## Modo de uso por equipo
 
-1. Hacer fork de este repo base.
-2. Conectarlo con el laboratorio AIQUAA.
-3. Correr el seed del laboratorio.
-4. Completar los archivos plantilla.
-5. Agregar sus propias pruebas y evidencias.
-6. Presentar el proyecto grupal con esta estructura como base.
+1. Clonar este repo base.
+2. Crear una rama por grupo y por semana.
+3. Conectarlo con el sitio web de AIQUAA como sistema bajo prueba.
+4. Correr el seed del laboratorio.
+5. Completar los archivos plantilla.
+6. Agregar sus propias pruebas y evidencias.
+7. Entregar un PR por semana.
+
+## Variables de entorno
+
+Copiar `.env.example` a `.env` y ajustar:
+
+- `BASE_URL`
+- `API_BASE_URL`
+- `GROUP_NAME`
+- `SESSION_PROFILE`
+
+## Scripts utiles
+
+- `pnpm test:e2e`
+- `pnpm test:api`
+- `pnpm test:bdd`
+- `pnpm smoke`

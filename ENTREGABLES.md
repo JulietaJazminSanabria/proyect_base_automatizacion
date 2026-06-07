@@ -40,7 +40,13 @@ Cada equipo debe entregar como minimo:
 - workflow de PR o push
 - ejecucion minima de checks
 
-## 7. Documentacion final
+## 7. PR semanal
+
+- 1 PR por semana por grupo
+- descripcion clara del avance
+- evidencias adjuntas
+
+## 8. Documentacion final
 
 - README actualizado del equipo
 - pasos de ejecucion
