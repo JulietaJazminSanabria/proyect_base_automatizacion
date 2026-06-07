@@ -1,122 +1,205 @@
-# Proyect Base Automatizacion
+# Proyecto Base — Automatización AIQUAA
 
-Base comun para el proyecto grupal que deben entregar los equipos.
+Repositorio de inicio para el curso de **QA Automation** (8 semanas). Cada equipo clona este repo, trabaja en su propia rama y entrega un PR por semana.
 
-Este repositorio existe separado de AIQUAA para que:
+El sitio bajo prueba es [AIQUAA](https://aiquaa.com).
 
-- no se mezcle con el producto principal
-- cada equipo pueda clonarlo como punto de partida
-- el entregable grupal tenga estructura comun
-- BDD, API, UI y CI/CD partan de una misma base
+---
 
-## Objetivo
+## Requisitos previos
 
-Cada equipo debe usar esta base para construir y entregar una automatizacion completa sobre el laboratorio de AIQUAA, cubriendo al menos:
+| Herramienta | Versión mínima |
+|-------------|----------------|
+| Node.js     | 18 LTS o superior |
+| npm         | incluido con Node.js |
+| Git         | cualquier versión reciente |
+| VS Code     | recomendado (con extensión Playwright) |
 
-- analisis funcional breve
-- escenarios BDD
-- coleccion Postman/Newman
-- automatizacion UI con Playwright
-- evidencias
-- pipeline CI minimo
+---
 
-## Estructura
+## Instalación
 
-```text
-proyect_base_automatizacion/
-|-- README.md
-|-- ENTREGABLES.md
-|-- BACKLOG.md
-|-- package.json
-|-- playwright.config.ts
-|-- .env.example
-|-- features/
-|   |-- auth.feature
-|   `-- checkout.feature
-|-- postman/
-|   |-- AIQUAA-Lab-Template.postman_collection.json
-|   `-- local.postman_environment.json
-|-- playwright/
-|   `-- README.md
-|-- tests/
-|   |-- e2e/
-|   |   `-- smoke.spec.ts
-|   `-- bdd/
-|       `-- README.md
-|-- ci/
-|   `-- github-actions-template.yml
-|-- docs/
-|   `-- FLUJO_SEMANAL.md
-|-- evidence/
-|   `-- README.md
-`-- templates/
-    |-- bug-report-template.md
-    `-- test-plan-template.md
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/<tu-usuario>/proyect_base_automatizacion.git
+cd proyect_base_automatizacion
+
+# 2. Instalar dependencias
+npm install
+
+# 3. Instalar los navegadores de Playwright
+npx playwright install chromium
+
+# 4. Copiar el archivo de variables de entorno
+cp .env.example .env
+# Editar .env con tus datos reales (nunca subir .env al repo)
 ```
 
-## Alcance sugerido del entregable
+---
 
-### Modulo 1
+## Cómo correr los tests
 
-- acceso y recuperacion
+```bash
+# Tests UI con Playwright (modo headless)
+npm run test:e2e
 
-### Modulo 2
+# Tests UI con el navegador visible
+npm run test:e2e:headed
 
-- onboarding / alta
+# Solo el smoke test
+npm run smoke
 
-### Modulo 3
+# Ver el reporte HTML tras la ejecución
+npm run test:e2e:report
 
-- operacion y seguimiento
+# Tests de API con Newman
+npm run test:api
 
-## Endpoints recomendados
+# Tests BDD con Cucumber
+npm run test:bdd
 
-### Auth real
+# Correr todo (API + UI)
+npm run verify
+```
 
-- `POST /api/v1/auth/login`
-- `POST /api/v1/auth/request-reset`
-- `POST /api/v1/auth/reset`
-- `POST /api/v1/auth/register`
-- `GET /api/v1/auth/verify-email?token=...`
+---
 
-### Laboratorio
+## Estructura del repositorio
 
-- `POST /api/v1/labs/admin/seed/:candidateId`
-- `POST /api/v1/labs/admin/reset`
-- `GET /api/v1/labs/test-app/products`
-- `POST /api/v1/labs/test-app/cart/items`
-- `POST /api/v1/labs/test-app/checkout`
-- `GET /api/v1/labs/test-app/orders`
-- `GET /api/v1/labs/evidence/:sessionId`
+```
+proyect_base_automatizacion/
+├── .github/
+│   ├── pull_request_template.md   # Plantilla para PRs de los equipos
+│   └── workflows/
+│       └── blank.yml              # Pipeline CI/CD (GitHub Actions)
+├── ci/
+│   └── github-actions-template.yml  # Referencia para equipos que extiendan el CI
+├── docs/
+│   └── FLUJO_SEMANAL.md           # Guía de actividades por semana
+├── evidence/
+│   └── README.md                  # Instrucciones para guardar evidencias
+├── features/
+│   ├── auth.feature               # Escenarios BDD de autenticación
+│   └── checkout.feature           # Escenarios BDD de checkout
+├── playwright/
+│   ├── pages/
+│   │   └── BasePage.ts            # Clase base para Page Objects
+│   └── README.md                  # Guía de uso de Playwright en este proyecto
+├── postman/
+│   ├── AIQUAA-Lab-Template.postman_collection.json
+│   ├── local.postman_environment.json
+│   └── README.md
+├── templates/
+│   ├── bug-report-template.md     # Plantilla de reporte de bugs
+│   └── test-plan-template.md      # Plantilla de plan de pruebas
+├── tests/
+│   ├── bdd/                       # Steps y hooks de Cucumber
+│   └── e2e/
+│       └── smoke.spec.ts          # Smoke test inicial
+├── .env.example                   # Variables de entorno de ejemplo
+├── .gitignore
+├── BACKLOG.md                     # Backlog de pruebas sugeridas
+├── ENTREGABLES.md                 # Criterios de entrega por semana
+├── package.json
+├── playwright.config.ts
+└── README.md
+```
 
-## Perfiles sugeridos de sesion
-
-- `default`
-- `demo`
-- `team-a`
-- `team-b`
-
-## Modo de uso por equipo
-
-1. Clonar este repo base.
-2. Crear una rama por grupo y por semana.
-3. Conectarlo con el sitio web de AIQUAA como sistema bajo prueba.
-4. Correr el seed del laboratorio.
-5. Completar los archivos plantilla.
-6. Agregar sus propias pruebas y evidencias.
-7. Entregar un PR por semana.
+---
 
 ## Variables de entorno
 
-Copiar `.env.example` a `.env` y ajustar:
+Copiar `.env.example` a `.env` y completar los valores:
 
-- `BASE_URL`
-- `API_BASE_URL`
-- `GROUP_NAME`
-- `SESSION_PROFILE`
+| Variable         | Descripción                              |
+|-----------------|------------------------------------------|
+| `BASE_URL`      | URL del sitio bajo prueba                |
+| `API_URL`       | URL base de la API                       |
+| `TEST_USER`     | Email del usuario de prueba              |
+| `TEST_PASSWORD` | Contraseña del usuario de prueba         |
+| `GROUP_NAME`    | Identificador del equipo (ej: `grupo-a`) |
+| `SESSION_PROFILE` | Perfil del laboratorio (`team-a`, etc.) |
 
-## Scripts utiles
+> **Importante:** nunca subas el archivo `.env` al repositorio. Está en `.gitignore`.
 
-- `pnpm test:e2e`
-- `pnpm test:api`
-- `pnpm test:bdd`
-- `pnpm smoke`
+---
+
+## Convenciones del proyecto
+
+### Archivos de test
+- Nombrar como `nombre-modulo.spec.ts` en `tests/e2e/`
+- Un archivo por módulo funcional (ej: `auth.spec.ts`, `checkout.spec.ts`)
+
+### Page Objects
+- Ubicar en `playwright/pages/`
+- Nombrar como `NombrePage.ts` (ej: `LoginPage.ts`, `CartPage.ts`)
+- Extender siempre de `BasePage`
+
+### Features Gherkin
+- Un archivo `.feature` por módulo funcional en `features/`
+- Escribir en español, formato BDD estándar
+
+### Ramas
+- Formato: `semana-N/nombre-integrante`
+- Ejemplos: `semana-1/garcia`, `semana-3/lopez-martinez`
+
+### Commits
+- Formato simple en español, tiempo presente
+- Ejemplos: `agrega test de login`, `corrige selector del boton pagar`, `actualiza coleccion postman`
+
+---
+
+## Guía de onboarding para estudiantes
+
+Pasos exactos desde cero (asumiendo Node.js, Git y VS Code ya instalados):
+
+```bash
+# Paso 1: Clonar el repo
+git clone https://github.com/<tu-usuario>/proyect_base_automatizacion.git
+cd proyect_base_automatizacion
+
+# Paso 2: Instalar todo
+npm install
+npx playwright install chromium
+
+# Paso 3: Configurar el entorno
+cp .env.example .env
+# Abrir .env en VS Code y completar con tus datos
+
+# Paso 4: Verificar que los tests corren
+npm run smoke
+
+# Paso 5: Crear tu rama de trabajo
+git checkout -b semana-1/tu-apellido
+
+# Paso 6: Trabajar, commitear y abrir un PR
+git add .
+git commit -m "agrega primer escenario de autenticacion"
+git push origin semana-1/tu-apellido
+# Abrir Pull Request en GitHub desde la interfaz web
+```
+
+Si `npm run smoke` pasa sin errores, el entorno está configurado correctamente.
+
+---
+
+## Contribución (equipos)
+
+1. Nunca trabajar directamente en `main`
+2. Una rama por semana y por integrante
+3. Abrir un PR al finalizar cada semana
+4. Incluir capturas o videos como evidencia en `evidence/`
+5. Describir los escenarios cubiertos en el PR usando la plantilla
+
+---
+
+## Scripts de referencia
+
+| Comando               | Descripción                         |
+|----------------------|-------------------------------------|
+| `npm run test:e2e`   | Tests UI headless (todos)           |
+| `npm run smoke`      | Solo smoke test                     |
+| `npm run test:api`   | Colección Postman via Newman        |
+| `npm run test:bdd`   | Escenarios Gherkin via Cucumber     |
+| `npm run verify`     | API + UI juntos                     |
+| `npm run test:e2e:report` | Abre el reporte HTML          |

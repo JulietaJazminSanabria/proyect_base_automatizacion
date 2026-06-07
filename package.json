@@ -4,37 +4,18 @@
   "version": "0.1.0",
   "description": "Base academica para automatizar AIQUAA como sitio bajo prueba.",
   "scripts": {
-    "smoke": "pnpm test:e2e",
     "test:e2e": "playwright test",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:report": "playwright show-report",
     "test:api": "newman run postman/AIQUAA-Lab-Template.postman_collection.json -e postman/local.postman_environment.json",
     "test:bdd": "cucumber-js \"features/**/*.feature\"",
-    "verify": "pnpm test:api && pnpm test:e2e"
+    "smoke": "playwright test tests/e2e/smoke.spec.ts",
+    "verify": "npm run test:api && npm run test:e2e"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^11.0.1",
-    "@playwright/test": "^1.60.0",
-    "@types/node": "^25.9.2",
+    "@playwright/test": "^1.54.2",
     "dotenv": "^17.2.3",
     "newman": "^6.2.1"
-  },
-  "packageManager": "pnpm@9.15.9",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs",
-    "test": "tests"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/stevenayal/proyect_base_automatizacion.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/stevenayal/proyect_base_automatizacion/issues"
-  },
-  "homepage": "https://github.com/stevenayal/proyect_base_automatizacion#readme"
+  }
 }
