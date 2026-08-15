@@ -81,6 +81,13 @@ proyect_base_automatizacion/
 ├── features/
 │   ├── auth.feature               # Escenarios BDD de autenticación
 │   └── checkout.feature           # Escenarios BDD de checkout
+├── grupos/                        # Vertical slice por grupo (tarea BDD)
+│   └── grupo-XX-modulo/
+│       ├── README.md              # Alcance, integrantes, checklist de entrega
+│       ├── features/              # .feature del módulo asignado al grupo
+│       ├── tests/e2e/             # Specs Playwright del módulo
+│       ├── playwright/pages/      # Page Objects del módulo
+│       └── evidence/              # Evidencias del grupo
 ├── playwright/
 │   ├── pages/
 │   │   └── BasePage.ts            # Clase base para Page Objects
@@ -140,8 +147,11 @@ Copiar `.env.example` a `.env` y completar los valores:
 - Escribir en español, formato BDD estándar
 
 ### Ramas
-- Formato: `semana-N/nombre-integrante`
-- Ejemplos: `semana-1/garcia`, `semana-3/lopez-martinez`
+- Entrega semanal individual: `semana-N/nombre-integrante`
+  - Ejemplos: `semana-1/garcia`, `semana-3/lopez-martinez`
+- Tarea BDD por grupo (10 grupos, ver `inscripcion-grupos-bdd2.xlsx`): `grupo-XX-modulo`
+  - Ejemplos: `grupo-01-autenticacion-acceso`, `grupo-07-carrito-ecommerce`
+  - Cada grupo trabaja únicamente dentro de su carpeta `grupos/grupo-XX-modulo/` y abre 1 PR a `main` con esa carpeta completa
 
 ### Commits
 - Formato simple en español, tiempo presente
