@@ -6,6 +6,6 @@
 
 Feature: Autenticación y Acceso
 
-  # TODO: Scenario: happy pat
+  # TODO: Scenario: happy path
   # TODO: Scenario: caso negativo
   # TODO: Scenario: edge case
