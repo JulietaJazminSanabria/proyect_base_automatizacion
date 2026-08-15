@@ -4,8 +4,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 export default defineConfig({
-  testDir: '.',
-  testMatch: ['tests/e2e/**/*.spec.ts', 'grupos/**/tests/e2e/**/*.spec.ts'],
+  testDir: './tests/e2e',
   timeout: 30_000,
   retries: 1,
   reporter: [['html', { open: 'never' }], ['list']],
