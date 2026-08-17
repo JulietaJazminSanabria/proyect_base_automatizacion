@@ -21,6 +21,11 @@ Feature: Pagos de Servicios
       When el usuario realiza el pago de la factura
       Then el sistema debe confirmar el pago correctamente
 
+    Scenario: Pago exitoso de factura de telefonia
+      Given el usuario tiene una factura de telefonia pendiente de pago
+      When el usuario selecciona el numero de linea y confirma el pago
+      Then el sistema muestra el comprobante de pago exitoso
+
   # TODO: Scenario: caso negativo
   
     Scenario: Pago de ANDE rechazado por saldo insuficiente
@@ -32,6 +37,11 @@ Feature: Pagos de Servicios
       Given el usuario ingresa un numero de cuenta de ESSAP inexistente
       When el usuario intenta realizar el pago
       Then el sistema debe mostrar un mensaje de error
+
+    Scenario: Intento de pago de telefonia sin deuda pendiente
+      Given el usuario no tiene facturas de telefonia pendientes de pago
+      When el usuario intenta realizar un pago
+      Then el sistema muestra un mensaje indicando que no existe deuda pendiente
 
   # TODO: Scenario: edge case
   
