@@ -6,6 +6,7 @@
 ## Integrantes
 
 - (completar: nombre y email — ver `inscripcion-grupos-bdd2.xlsx`)
+- Juan Morel - jospz077@gmail.com
 
 ## Alcance
 
