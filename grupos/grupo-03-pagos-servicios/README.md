@@ -7,6 +7,7 @@
 
 - (completar: nombre y email — ver `inscripcion-grupos-bdd2.xlsx`)
 - Juan Morel - jospz077@gmail.com
+- Ana Segovia - annyse.28@gmail.com
 
 ## Alcance
 
