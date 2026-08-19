@@ -17,4 +17,4 @@ Feature: Transferencias entre Cuentas
   Then la transferencia se realiza exitosamente
   And el saldo de la cuenta origen se reduce en 5000000 Gs
   And el saldo de la cuenta destino aumenta en 5000000 Gs
-  And se genera un comprobante de la transferencia
+  And se genera un comprobante de la transferencias
