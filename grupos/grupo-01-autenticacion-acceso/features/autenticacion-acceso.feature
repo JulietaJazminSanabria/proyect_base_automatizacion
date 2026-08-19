@@ -6,12 +6,16 @@
 
 Feature: Autenticación y Acceso
 
-  # TODO: Scenario: happy path
+  # TODO: Agregar escenarios adicionales del equipo (happy path, caso negativo o edge case)
 
-  # Scenario: caso negativo: Mariset C. Lorente Castillo
+  # Scenario: caso negativo - Mariset C. Lorente Castillo
   Scenario: Login rechazado con credenciales invalidas
   Given existe una sesion seeded para la cohorte "demo"
   When el usuario intenta iniciar sesion con credenciales invalidas
-  Then el acceso al catalogo del laboratorio debe ser rechazado
+  Then se debe ver un mensaje de error de autenticacion
 
-  # TODO: Scenario: edge case
+  # Scenario: edge case - Mariset C. Lorente Castillo
+  Scenario: Login con correo valido ingresado con espacios
+  Given el usuario se encuentra en la pantalla de inicio de sesion
+  When ingresa un correo valido con espacios adicionales
+  Then se debe ver el mensaje "Correo inválido" y no se debe permitir iniciar sesion
