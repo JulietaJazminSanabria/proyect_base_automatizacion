@@ -7,5 +7,11 @@
 Feature: Autenticación y Acceso
 
   # TODO: Scenario: happy path
-  # TODO: Scenario: caso negativo
+
+  # Scenario: caso negativo: Mariset C. Lorente Castillo
+  Scenario: Login rechazado con credenciales invalidas
+  Given existe una sesion seeded para la cohorte "demo"
+  When el usuario intenta iniciar sesion con credenciales invalidas
+  Then el acceso al catalogo del laboratorio debe ser rechazado
+
   # TODO: Scenario: edge case
