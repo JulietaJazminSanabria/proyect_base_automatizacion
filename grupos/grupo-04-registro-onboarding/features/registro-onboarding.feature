@@ -20,6 +20,11 @@ Scenario: Registro completado correctamente con verificación de correo
     When El usuario ingresa un correo válido y confirma el código de verificación recibido
     Then El sistema valida el correo y completa el registro del usuario
 
+Scenario: Registro exitoso completando todos los datos requeridos
+  Given El usuario se encuentra en el formulario de registro
+  When El usuario completa correctamente todos los campos obligatorios con datos válidos y confirma el registro
+  Then El sistema registra al nuevo usuario correctamente y permite acceder a la plataforma
+
   # TODO: Scenario: caso negativo
 
   Scenario: Registro rechazado por número de cédula inválido
@@ -42,6 +47,11 @@ Scenario: Registro rechazado por no cumplir con la edad mínima requerida
     When El sistema valida que el usuario no cumple con la edad mínima requerida
     Then El sistema rechaza el registro y muestra un mensaje indicando que no cumple con los requisitos de edad
 
+Scenario: Registro rechazado por correo electrónico ya registrado
+  Given Existe una cuenta registrada con el mismo correo electrónico
+  When El usuario intenta registrarse utilizando ese correo
+  Then El sistema no permite crear una nueva cuenta y muestra un mensaje indicando que el correo ya se encuentra registrado
+
   # TODO: Scenario: edge case
   Scenario: Intento de registro con cédula ya existente en el sistema
     Given Existe una cuenta previamente registrada con la misma cédula
@@ -58,3 +68,8 @@ Scenario: Registro durante indisponibilidad temporal del servicio de validación
     And El servicio de validación de identidad se encuentra temporalmente no disponible
     When El usuario confirma el registro
     Then El sistema informa que la validación no está disponible temporalmente y permite reintentar el proceso posteriormente
+
+Scenario: Pérdida de conexión durante el registro
+  Given El usuario completa el formulario de registro con datos válidos
+  When El usuario confirma el registro y se pierde la conexión a internet
+  Then El sistema informa que el registro no pudo completarse y permite volver a intentarlo
