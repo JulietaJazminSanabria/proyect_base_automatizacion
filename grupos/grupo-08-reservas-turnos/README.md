@@ -5,7 +5,7 @@
 
 ## Integrantes
 
-- (completar: nombre y email — ver `inscripcion-grupos-bdd2.xlsx`)
+- (completar: Yessica Ferreira y jessyferreira78@gmail.com — ver `inscripcion-grupos-bdd2.xlsx`)
 
 ## Alcance
 
