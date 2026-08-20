@@ -9,6 +9,7 @@
 - Sandra Penayo - sandrapenayo3@gmail.com
 - Mathias Olmedo - olmedomathias1208@gmail.com
 - Fabiola Fretes - fabiolafretes14@gmail.com
+- Natalia Valdez - nataliaval1912@gmail.com
 ## Alcance
 
 - TODO: objetivo del flujo automatizado
