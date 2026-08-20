@@ -52,3 +52,9 @@ Scenario: Registro rechazado por no cumplir con la edad mínima requerida
     Given El usuario recibió un código de verificación para completar su registro
     When El usuario intenta utilizar el código después de su tiempo de vigencia
     Then El sistema indica que el código ha expirado y solicita generar uno nuevo
+	
+Scenario: Registro durante indisponibilidad temporal del servicio de validación
+    Given El usuario completa el formulario de registro con datos válidos
+    And El servicio de validación de identidad se encuentra temporalmente no disponible
+    When El usuario confirma el registro
+    Then El sistema informa que la validación no está disponible temporalmente y permite reintentar el proceso posteriormente
