@@ -8,4 +8,9 @@ Feature: Reservas / Turnos
 
   # TODO: Scenario: happy path
   # TODO: Scenario: caso negativo
+Scenario: Reserva con fecha y hora pasada
+	Given el usuario se encuentra en la pantalla de reserva e ingresa una fecha y  hora anterior al actual 
+	When intenta confirmar la reserva 
+	Then el sistema debe rechazar la reserva y mostrar mensaje de que la fecha no está disponible.
+
   # TODO: Scenario: edge case
