@@ -7,6 +7,7 @@
 
 - (completar: nombre y email — ver `inscripcion-grupos-bdd2.xlsx`)
 - Sandra Penayo - sandrapenayo3@gmail.com
+- Mathias Olmedo - olmedomathias1208@gmail.com
 ## Alcance
 
 - TODO: objetivo del flujo automatizado
