@@ -31,6 +31,16 @@ Scenario: Registro completado correctamente con verificación de correo
     Given El usuario se encuentra en el formulario de registro
     When El usuario ingresa un correo con un formato inválido
     Then El sistema muestra un mensaje indicando que el correo electrónico no es válido
+	
+Scenario: Registro rechazado por campos obligatorios incompletos
+    Given El usuario se encuentra en el formulario de registro
+    When El usuario intenta enviar el formulario sin completar uno o más campos obligatorios
+    Then El sistema no permite continuar con el registro y muestra un mensaje indicando los campos que deben ser completados
+	
+Scenario: Registro rechazado por no cumplir con la edad mínima requerida
+    Given El usuario ingresa sus datos personales correctamente
+    When El sistema valida que el usuario no cumple con la edad mínima requerida
+    Then El sistema rechaza el registro y muestra un mensaje indicando que no cumple con los requisitos de edad
 
   # TODO: Scenario: edge case
   Scenario: Intento de registro con cédula ya existente en el sistema
