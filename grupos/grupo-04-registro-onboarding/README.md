@@ -6,7 +6,6 @@
 ## Integrantes
 
 - (completar: nombre y email — ver `inscripcion-grupos-bdd2.xlsx`)
-- Sandra Penayo - sandrapenayo3@gmail.com
 
 ## Alcance
 
