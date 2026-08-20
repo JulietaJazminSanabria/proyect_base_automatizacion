@@ -15,6 +15,10 @@ Scenario : Registro exitoso de nuevo cliente con datos válidos
   When El usuario confirma el envío de formulario de registro
   Then El sistema crea la cuenta del usuario y muestra un mensaje de Bienvenida
 
+Scenario: Registro completado correctamente con verificación de correo
+    Given El usuario se encuentra en el formulario de registro
+    When El usuario ingresa un correo válido y confirma el código de verificación recibido
+    Then El sistema valida el correo y completa el registro del usuario
 
   # TODO: Scenario: caso negativo
 
@@ -23,8 +27,18 @@ Scenario : Registro exitoso de nuevo cliente con datos válidos
     When El usuario intenta enviar el formulario de registro
     Then El sistema muestra un mensaje de error indicando que la cédula es inválida
 
+  Scenario: Registro rechazado por correo electrónico inválido
+    Given El usuario se encuentra en el formulario de registro
+    When El usuario ingresa un correo con un formato inválido
+    Then El sistema muestra un mensaje indicando que el correo electrónico no es válido
+
   # TODO: Scenario: edge case
   Scenario: Intento de registro con cédula ya existente en el sistema
     Given Existe una cuenta previamente registrada con la misma cédula
     When El usuario intenta completar el registro con esa cédula
     Then El sistema muestra un mensaje indicando que el usuario ya se encuentra registrado
+
+  Scenario: Código de verificación expirado durante el registro
+    Given El usuario recibió un código de verificación para completar su registro
+    When El usuario intenta utilizar el código después de su tiempo de vigencia
+    Then El sistema indica que el código ha expirado y solicita generar uno nuevo
