@@ -16,6 +16,31 @@ Feature: Reservas / Turnos
     *When: El usaurio selecciona fecha y horario ya reservado.
     *Then: El sistema no debe permitir realizar la reserva.
 
+  Scenario: Consulta exitosa de turnos disponibles
+  Given existen turnos disponibles para reservar
+  When el usuario consulta los turnos disponibles
+  Then el sistema debe mostrar los turnos disponibles correctamente
+
+  Scenario: Consulta exitosa de una reserva existente
+  Given existe una reserva registrada
+  When el usuario consulta la reserva
+  Then el sistema debe mostrar los datos de la reserva correctamente
+  
+  Scenario: Consulta de turnos sin disponibilidad
+  Given no existen turnos disponibles para la fecha seleccionada
+  When el usuario consulta los turnos disponibles
+  Then el sistema debe informar que no existen turnos disponibles
+  
+  Scenario: Reserva con fecha anterior a la actual
+  Given existen turnos registrados en el sistema
+  When el usuario intenta realizar una reserva para una fecha anterior a la actual
+  Then el sistema debe rechazar la reserva
+  
+  Scenario: Reserva simultanea del ultimo turno disponible
+  Given existe un unico turno disponible
+  When dos usuarios intentan reservar el mismo turno al mismo tiempo
+  Then el sistema debe confirmar la reserva para un solo usuario y rechazar la otra solicitud
+
 
 
   # TODO: Scenario: happy path

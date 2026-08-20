@@ -6,6 +6,7 @@
 ## Integrantes
 
 - (completar: Yessica Ferreira y jessyferreira78@gmail.com — ver `inscripcion-grupos-bdd2.xlsx`)
+- (completar: Salma Gimenez y sagimenez98@gmail.com — ver `inscripcion-grupos-bdd2.xlsx`)
 
 ## Alcance
 
