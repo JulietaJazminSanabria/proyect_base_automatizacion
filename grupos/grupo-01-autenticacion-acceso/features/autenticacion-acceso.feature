@@ -18,4 +18,4 @@ Feature: Autenticación y Acceso
   Scenario: Login con correo valido ingresado con espacios
   Given el usuario se encuentra en la pantalla de inicio de sesion
   When ingresa un correo valido con espacios adicionales
-  Then se debe ver el mensaje "Correo inválido" y no se debe permitir iniciar sesion
+  Then se debe ver el mensaje "Correo inválido" y no se debe permitir iniciar sesion.
