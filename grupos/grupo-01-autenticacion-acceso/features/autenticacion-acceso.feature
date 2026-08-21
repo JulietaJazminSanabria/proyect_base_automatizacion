@@ -37,3 +37,10 @@ Feature: Autenticación y Acceso
     Given el usuario tiene una sesion activa pero el token expirado
     When selecciona la opcion de cerrar sesion
     Then el sistema debe finalizar la sesion de forma segura y redirigir al login
+
+ # Scenario: edge case - Gloria Figueredo
+  Scenario: Login con campos obligatorios vacíos
+  Given el usuario se encuentra en la pantalla de inicio de sesion
+  When intenta iniciar sesion sin ingresar usuario ni contraseña
+  Then el sistema debe impedir el acceso
+  And debe informar que los campos de autenticacion son obligatorios
