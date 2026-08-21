@@ -18,6 +18,7 @@ Feature: Autenticación y Acceso
   Scenario: Login con correo valido ingresado con espacios
   Given el usuario se encuentra en la pantalla de inicio de sesion
   When ingresa un correo valido con espacios adicionales
+<<<<<<< HEAD
   Then se debe ver el mensaje "Correo inválido" y no se debe permitir iniciar sesion
 
 # Scenario: happy path - Mariel Aquino
@@ -37,3 +38,6 @@ Feature: Autenticación y Acceso
     Given el usuario tiene una sesion activa pero el token expirado
     When selecciona la opcion de cerrar sesion
     Then el sistema debe finalizar la sesion de forma segura y redirigir al login
+=======
+  Then se debe ver el mensaje "Correo inválido" y no se debe permitir iniciar sesion.
+>>>>>>> cb1981be24a77cefacc6558c87ff9e02b0277e36
