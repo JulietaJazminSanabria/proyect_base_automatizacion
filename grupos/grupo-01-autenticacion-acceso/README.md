@@ -5,7 +5,11 @@
 
 ## Integrantes
 
-- (completar: nombre y email — ver `inscripcion-grupos-bdd2.xlsx`)
+- Gloria Figueredo ---> gloriaoliva487@gmail.com
+- David Cristaldo  ---> davidcrislo89@gmail.com
+- Oscar Benítez    ---> oscardocito@gmail.com
+- Mariel Aquino    ---> maquino1986@gmail.com
+- Mariset Lorente  ---> marisetlorentecastillo@gmail.com
 
 ## Alcance
 
