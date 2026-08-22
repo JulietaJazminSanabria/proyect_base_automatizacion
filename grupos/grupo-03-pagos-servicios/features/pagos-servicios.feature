@@ -49,6 +49,12 @@ Feature: Pagos de Servicios
       When el usuario intenta realizar un pago
       Then el el sistema rechaza la operación
 
+    Scenario: Pago de factura de telefonia con numero de linea invalido
+      Given el usuario ingresa un numero de linea de telefonia invalido
+      When el usuario intenta consultar la factura
+      Then el sistema muestra un mensaje indicando que no se encontro la linea
+      And no permite continuar con el pago
+
   # TODO: Scenario: edge case
   
     Scenario: Factura de ANDE ya pagada anteriormente
@@ -60,3 +66,9 @@ Feature: Pagos de Servicios
       Given el sistema de pagos de ESSAP esta en mantenimiento
       When el usuario intenta confirmar el pago de su factura de agua
       Then el sistema muestra un mensaje indicando que el servicio esta temporalmente en mantenimiento
+
+    Scenario: Pago de factura de telefonia el mismo dia del vencimiento
+      Given el usuario tiene una factura de telefonia pendiente con vencimiento en el dia de hoy
+      When el usuario realiza el pago antes de la hora limite
+      Then el sistema procesa el pago correctamente
+      And el sistema muestra el comprobante de pago
