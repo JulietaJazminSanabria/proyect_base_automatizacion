@@ -60,3 +60,10 @@ Feature: Autenticación y Acceso
   When inicia sesion con credenciales validas
   Then debe autenticarse correctamente
   And debe acceder a la herramienta protegida solicitada
+
+  # Scenario: happy path - David Cristaldo
+  Scenario: Recuperacion de contraseña exitosa con correo registrado
+  Given el usuario se encuentra en la pantalla de recuperacion
+  When solicita restablecer la contraseña con un correo registrado
+  Then el sistema debe enviar un correo con el enlace de restablecimiento
+  And debe informar que la solicitud fue procesada correctamente
