@@ -1,50 +1,55 @@
 # Grupo 05 — Tarjetas de Crédito/Débito
 # Módulo: Gestión de tarjetas
 #
-# Escenarios BDD del módulo de pago con tarjeta en el checkout del laboratorio.
+# Escenarios BDD del módulo de gestión de tarjetas de crédito/débito.
 # Ver ENTREGABLES.md: mínimo 3 escenarios (1 happy path, 1 negativo, 1 edge case).
 
-Feature: Tarjetas de Crédito/Débito
+Feature: Gestión de tarjetas de crédito/débito
+  Como cliente del banco
+  Quiero realizar gestiones de mis tarjetas de crédito/débito
+  Para mantenerme al día con los últimos ajustes de mi tarjeta
 
-  # Scenario: happy path - Marcos Trinidad
-  Scenario: Pago exitoso con tarjeta de credito valida
-    Given el usuario tiene una sesion activa en el laboratorio
-    And el carrito contiene al menos un producto
-    When completa la informacion de pago con una tarjeta valida
-    Then el sistema debe crear el pedido
-    And debe mostrar el mensaje "¡Pedido realizado con éxito!"
+  Scenario: Ver datos tarjeta
+    Given el cliente está autenticado en la app con biometría válida
+    And posee una tarjeta de crédito/débito
+    When el cliente solicita visualizar los datos de la tarjeta
+    Then se muestra el numero de tarjeta, vencimiento y datos adicionales
+
+  Scenario: Cambio exitoso de PIN
+    When el cliente cambia el PIN actual por un nuevo PIN
+    Then el sistema confirma el cambio con el mensaje "PIN actualizado"
+    And el nuevo PIN es requerido en la siguiente transacción
+
+  Scenario: Bloqueo temporal por tarjeta perdida
+    When el cliente reporta la tarjeta como "PERDIDA"
+    Then la tarjeta queda con estado "BLOQUEO_TEMPORAL"
+    And el bloqueo se aplica en todos los canales
+    And las autorizaciones posteriores son rechazadas
+    And se genera una notificación correspondiente al cliente
+
+  Scenario: Desbloqueo exitoso de tarjeta bloqueada
+    Given la tarjeta tiene estado "BLOQUEADA" por motivo del "CLIENTE"
+    When el cliente solicita el desbloqueo
+    And autentica con biometría válida
+    Then la tarjeta queda con estado "ACTIVA"
+    And el sistema confirma el desbloqueo por el medio de notificacion optado por el cliente
+
+  Scenario: Aumento exitoso de límite diario de compras
+    When el cliente modifica el límite "compras_comercio" a un monto diario superior
+    And confirma con OTP válido
+    Then el nuevo límite diario queda confirmado
+    And el cambio es efectivo inmediatamente para nuevas autorizaciones
+
+  Scenario: Pago exitoso desde cuenta propia
+    When el cliente paga un monto generado a la tarjeta desde su cuenta vista
+    Then el pago se registra con estado "APROBADA"
+    And se genera el comprobante con número único
 
   # Scenario: caso negativo - Marcos Trinidad
-  Scenario: Pago rechazado con datos de tarjeta incompletos
-    Given el usuario se encuentra en la pantalla de checkout
-    When intenta confirmar el pedido sin ingresar los datos de la tarjeta
-    Then el sistema debe impedir el envio del formulario
-    And debe informar que los campos de tarjeta son obligatorios
-
-  # Scenario: caso negativo - Marcos Trinidad
-  Scenario: Pago con tarjeta vencida
-    Given el usuario se encuentra en la pantalla de checkout
-    When ingresa una tarjeta con fecha de expiracion anterior a la fecha actual
-    Then el sistema debe rechazar el pago
-    And debe mostrar un mensaje de tarjeta vencida
-
-  # Scenario: caso negativo - Marcos Trinidad
-  Scenario: Pago con numero de tarjeta invalido
-    Given el usuario se encuentra en la pantalla de checkout
-    When ingresa un numero de tarjeta que no cumple la validacion de digito verificador
-    Then el sistema debe rechazar el pago
-    And no se debe registrar ningun pedido
-
-  # Scenario: edge case - Marcos Trinidad
-  Scenario: Pago con tarjeta de debito y CVV de cuatro digitos
-    Given el usuario se encuentra en la pantalla de checkout
-    When ingresa una tarjeta de debito con un CVV de cuatro digitos
-    Then el sistema debe aceptar el codigo de seguridad
-    And debe crear el pedido correctamente
-
-  # Scenario: edge case - Marcos Trinidad
-  Scenario: Enmascarado de los datos de la tarjeta en el pedido
-    Given el usuario confirmo un pedido con una tarjeta valida
-    When consulta el pedido en el historial
-    Then el numero de tarjeta debe mostrarse enmascarado con los ultimos cuatro digitos
-    And el CVV no debe quedar almacenado
+  Scenario: Aumento de límite diario rechazado por OTP inválido
+    Given la tarjeta tiene estado "ACTIVA"
+    When el cliente modifica el límite "compras_comercio" a un monto diario superior
+    And confirma con un OTP inválido
+    Then el sistema rechaza el cambio con el mensaje "Código OTP inválido"
+    And el límite diario se mantiene sin cambios
+    And se registra el intento fallido en la bitácora de la tarjeta

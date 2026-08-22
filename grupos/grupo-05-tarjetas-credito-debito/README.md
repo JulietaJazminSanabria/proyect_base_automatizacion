@@ -5,48 +5,40 @@
 
 ## Integrantes
 
-- Marcos Trinidad ---> (trinidad.py@gmail.com)
+- Marcos Trinidad ---> (completar email)
 
 ## Alcance
 
-- **Objetivo:** validar el flujo de pago con tarjeta de crédito/débito en el checkout
-  del laboratorio (`/labs/test-app/checkout`): captura de número de tarjeta, titular,
-  fecha de expiración y CVV, y el registro del pedido resultante.
+- **Objetivo:** validar las gestiones que el cliente realiza sobre sus tarjetas de
+  crédito/débito: consulta de datos, cambio de PIN, bloqueo y desbloqueo, modificación
+  de límites y pago de la tarjeta desde cuenta propia.
 - **Supuestos:**
-  - El usuario ya está autenticado (`tester@aiquaa.com` / `Test1234!`) y el carrito
-    tiene al menos un producto; el checkout redirige al carrito si está vacío.
-  - Los datos de tarjeta usados son de prueba, nunca reales.
+  - El cliente está autenticado en la app con biometría válida y posee al menos una
+    tarjeta de crédito/débito vigente.
+  - Las operaciones sensibles (cambio de límite) requieren confirmación por OTP.
+  - Los datos de tarjeta usados en las pruebas son de prueba, nunca reales.
 - **Riesgos:**
-  - El laboratorio inyecta bugs aleatorios por sesión (6 a 8 de 10), entre ellos
-    `bug-05-checkout-500` (Apartment/Suite > 50 caracteres devuelve un error genérico),
-    lo que puede afectar la estabilidad de los escenarios de checkout.
-  - El formulario no expone `data-testid`, por lo que los selectores dependen de los
-    labels visibles ("Número de Tarjeta", "CVV", etc.).
-- **Cobertura incluida:** validación de datos de tarjeta (número, expiración, CVV),
-  creación del pedido y enmascarado de los datos sensibles en el pedido guardado.
-- **Cobertura excluida:** integración con pasarelas de pago reales, 3-D Secure,
-  reembolsos y alta/baja de tarjetas guardadas (el laboratorio no las implementa).
+  - Los cambios de estado de tarjeta (bloqueo/desbloqueo) deben propagarse a todos los
+    canales; una propagación asíncrona puede generar resultados intermitentes.
+  - La dependencia de OTP y biometría exige datos de prueba controlados.
+- **Cobertura incluida:** consulta de datos de la tarjeta, cambio de PIN, bloqueo
+  temporal por pérdida, desbloqueo, aumento de límite diario (con OTP válido e inválido)
+  y pago desde cuenta propia.
+- **Cobertura excluida:** alta y emisión de tarjetas, tarjetas adicionales, 3-D Secure,
+  reversos y reclamos, y conciliación con la marca (Visa/Mastercard).
 
 ## Escenarios entregados
 
-6 escenarios en [`features/tarjetas-credito-debito.feature`](features/tarjetas-credito-debito.feature):
-1 happy path, 3 negativos y 2 edge cases.
-
-### Incidencias detectadas
-
-El checkout del laboratorio **no valida los datos de la tarjeta**: acepta tarjetas
-vencidas (`12/20`) y números que no cumplen el dígito verificador (Luhn), creando el
-pedido igual. Los escenarios "Pago con tarjeta vencida" y "Pago con numero de tarjeta
-invalido" documentan el comportamiento esperado y por lo tanto fallan contra el
-laboratorio actual.
+7 escenarios en [`features/tarjetas-credito-debito.feature`](features/tarjetas-credito-debito.feature):
+6 happy paths y 1 caso negativo (aumento de límite rechazado por OTP inválido).
 
 ## Entregables
 
 Checklist según [ENTREGABLES.md](../../ENTREGABLES.md):
 
 - [x] Análisis y alcance
-- [x] BDD — `features/` (mínimo 3 escenarios: happy path, negativo, edge case)
-- [ ] API — colección Postman/Newman (no aplica: el test-app es client-side, sin API)
+- [x] BDD — `features/` (happy path y caso negativo cubiertos; falta 1 edge case)
+- [ ] API — colección Postman/Newman
 - [ ] UI — `tests/e2e/` con Playwright
 - [ ] Evidencias en `evidence/`
 - [ ] CI/CD verde
