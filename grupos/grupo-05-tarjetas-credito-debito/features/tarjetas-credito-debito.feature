@@ -53,3 +53,39 @@ Feature: Gestión de tarjetas de crédito/débito
     Then el sistema rechaza el cambio con el mensaje "Código OTP inválido"
     And el límite diario se mantiene sin cambios
     And se registra el intento fallido en la bitácora de la tarjeta
+
+      # Scenario: caso negativo - Matias Murto
+  Scenario: Cambio de PIN rechazado por PIN actual incorrecto
+    Given la tarjeta tiene estado "ACTIVA"
+    When el cliente intenta cambiar el PIN ingresando un PIN actual incorrecto
+    Then el sistema rechaza el cambio con el mensaje "PIN actual incorrecto"
+    And el PIN vigente se mantiene sin cambios
+    And se incrementa el contador de intentos fallidos de la tarjeta
+
+  # Scenario: caso negativo - Matias Murto
+  Scenario: Pago rechazado por saldo insuficiente en cuenta vista
+    Given la tarjeta tiene estado "ACTIVA"
+    And el saldo disponible de la cuenta vista es 100000 PYG
+    When el cliente intenta pagar 500000 PYG a la tarjeta
+    Then el pago se registra con estado "RECHAZADA"
+    And el motivo de rechazo es "Fondos insuficientes"
+    And el saldo adeudado de la tarjeta se mantiene sin cambios
+
+  # Scenario: edge case - Matias Murto
+  Scenario: Compra autorizada por un monto exactamente igual al límite diario
+    Given la tarjeta tiene estado "ACTIVA"
+    And el límite "compras_comercio" es 5000000 PYG
+    And el consumo acumulado del día es 0 PYG
+    When se solicita la autorización de una compra por 5000000 PYG
+    Then la autorización se registra con estado "APROBADA"
+    And el disponible diario de "compras_comercio" queda en 0 PYG
+    And una compra adicional por 1 PYG es rechazada por "Límite diario excedido"
+
+  # Scenario: edge case - Matias Murto
+  Scenario: Desbloqueo denegado cuando el bloqueo fue por motivo "ROBO"
+    Given la tarjeta tiene estado "BLOQUEADA" por motivo "ROBO"
+    When el cliente solicita el desbloqueo
+    And autentica con biometría válida
+    Then el sistema rechaza la solicitud con el mensaje "Tarjeta no habilitada para desbloqueo"
+    And la tarjeta mantiene el estado "BLOQUEADA"
+    And el sistema ofrece iniciar el proceso de reposición de tarjeta
