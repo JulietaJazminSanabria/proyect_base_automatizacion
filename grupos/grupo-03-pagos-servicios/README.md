@@ -10,6 +10,7 @@
 - Ana Segovia - annyse.28@gmail.com
 - Lennys Cantero - lennyscantero@gmail.com
 - Enzo Ruiz Diaz - enzoruizdiaz96@gmail.com
+- Stefanía Cubas - stefi.cubas08@gmail.comm
 
 ## Alcance
 
