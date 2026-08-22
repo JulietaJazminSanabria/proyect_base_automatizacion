@@ -5,7 +5,21 @@
 # Ver ENTREGABLES.md: mínimo 3 escenarios (1 happy path, 1 negativo, 1 edge case).
 
 Feature: Administración de Roles y Permisos
+  Como administrador del backoffice
+  Quiero gestionar usuarios internos y sus roles
+  Para asegurar que cada usuario tenga los permisos correctos segun su funcion
 
-  # TODO: Scenario: happy path
-  # TODO: Scenario: caso negativo
+  Scenario: Administrador crea un usuario interno y le asigna un rol exitosamente
+    Given que un administrador ha iniciado sesion en el backoffice
+    When crea un nuevo usuario interno con los datos requeridos
+    And le asigna el rol "Editor"
+    Then el sistema crea el usuario correctamente
+    And el usuario queda visible en el listado con el rol "Editor" asignado
+
+  Scenario: Usuario sin permisos de administracion intenta crear un usuario interno
+    Given que un usuario con rol "Operador" ha iniciado sesion en el backoffice
+    When intenta crear un nuevo usuario interno
+    Then el sistema deniega la accion
+    And muestra un mensaje indicando que no tiene permisos suficientes
+
   # TODO: Scenario: edge case
