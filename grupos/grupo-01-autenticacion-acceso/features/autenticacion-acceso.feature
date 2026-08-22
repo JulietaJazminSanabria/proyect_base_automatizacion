@@ -44,3 +44,19 @@ Feature: Autenticación y Acceso
   When intenta iniciar sesion sin ingresar usuario ni contraseña
   Then el sistema debe impedir el acceso
   And debe informar que los campos de autenticacion son obligatorios
+
+  # Scenario: caso negativo - Oscar Benítez
+  Scenario: Redireccion al login al intentar acceder a un laboratorio protegido
+  Given el usuario no tiene una sesion autenticada
+  When intenta acceder a una herramienta protegida del laboratorio
+  Then el sistema debe redirigirlo a la pagina de inicio de sesion
+  And debe ofrecer las opciones de iniciar sesion o crear una cuenta
+
+  # Scenario: happy path - Oscar Benítez
+  Scenario: Acceso al recurso solicitado despues de iniciar sesion
+  Given existe una sesion seeded para la cohorte "demo"
+  And el usuario no autenticado intenta acceder a una herramienta protegida
+  And el sistema lo redirige a la pagina de inicio de sesion
+  When inicia sesion con credenciales validas
+  Then debe autenticarse correctamente
+  And debe acceder a la herramienta protegida solicitada
