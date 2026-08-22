@@ -11,9 +11,9 @@ Feature: Administración de Roles y Permisos
   # TODO: Scenario: edge case
 
 
-# Opción 5 (Edge Case - Último Admin):
-#  Scenario: Impedir la eliminación del único Administrador activo del sistema
-#    Given que solo existe un usuario registrado con el rol "Super Admin" en el sistema
-#    When el usuario intenta remover el rol "Super Admin" de esa única cuenta
-#    Then el sistema deshabilita la opción de guardar
- #   And muestra la advertencia "No se puede eliminar el único Administrador del sistema"
+# Scenario (Caso Negativo - Cajero intenta transferir alto monto):
+ # Scenario: Denegar autorización de transferencia extraordinaria a un Cajero
+  #  Given que el usuario autenticado en el backoffice tiene el rol "Cajero"
+   # When intenta aprobar un desembolso de "USD 50.000"
+    # Then el sistema bloquea la transacción
+     # And muestra el mensaje "Requiere autorización de un Gerente de Sucursal"
