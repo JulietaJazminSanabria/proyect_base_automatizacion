@@ -6,6 +6,14 @@
 
 Feature: Carrito de Compras / E-commerce
 
-  # TODO: Scenario: happy path
+  Scenario: Calcular el total del carrito con multiples productos
+    Given el usuario tiene los siguientes productos en el carrito:
+      | producto   | cantidad | precio  |
+      | Zapatillas | 1        | 250000  |
+      | Medias     | 2        | 15000   |
+      | Remera     | 1        | 80000   |
+    When el sistema calcula el total del carrito
+    Then el total debe ser 360000
+
   # TODO: Scenario: caso negativo
   # TODO: Scenario: edge case
