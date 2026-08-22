@@ -25,6 +25,11 @@ Scenario: Registro exitoso completando todos los datos requeridos
   When El usuario completa correctamente todos los campos obligatorios con datos válidos y confirma el registro
   Then El sistema registra al nuevo usuario correctamente y permite acceder a la plataforma
 
+Scenario: Registro exitoso utilizando inicio de sesion con cuenta de Google
+  Given El usuario se encuentra en el formulario de registro
+  When El usuario selecciona la opcion "Registrarse con Google" y autoriza sus credenciales
+  Then El sistema obtiene los datos del perfil y crea la cuenta del usuario exitosamente
+
   # TODO: Scenario: caso negativo
 
   Scenario: Registro rechazado por número de cédula inválido
@@ -52,6 +57,11 @@ Scenario: Registro rechazado por correo electrónico ya registrado
   When El usuario intenta registrarse utilizando ese correo
   Then El sistema no permite crear una nueva cuenta y muestra un mensaje indicando que el correo ya se encuentra registrado
 
+Scenario: Registro rechazado por contraseña sin requisitos de seguridad
+  Given El usuario se encuentra en el formulario de registro
+  When El usuario ingresa una contraseña debil "12345"
+  Then El sistema rechaza el registro y muestra una alerta "La contraseña debe tener al menos 8 caracteres"
+
   # TODO: Scenario: edge case
   Scenario: Intento de registro con cédula ya existente en el sistema
     Given Existe una cuenta previamente registrada con la misma cédula
@@ -73,3 +83,9 @@ Scenario: Pérdida de conexión durante el registro
   Given El usuario completa el formulario de registro con datos válidos
   When El usuario confirma el registro y se pierde la conexión a internet
   Then El sistema informa que el registro no pudo completarse y permite volver a intentarlo
+
+Scenario: Intento de re-registro de un usuario que elimino previamente su cuenta
+  Given Existe un usuario que elimino o dio de baja su cuenta anteriormente
+  When El usuario intenta registrarse nuevamente utilizando el mismo numero de documento
+  Then El sistema detecta la cuenta eliminada y le ofrece la opcion de reactivar su perfil anterior
+  
