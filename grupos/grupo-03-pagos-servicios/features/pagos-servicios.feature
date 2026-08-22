@@ -25,6 +25,7 @@ Feature: Pagos de Servicios
       Given el usuario tiene una factura de telefonia pendiente de pago
       When el usuario selecciona el numero de linea y confirma el pago
       Then el sistema muestra el comprobante de pago exitoso
+    
 
   # TODO: Scenario: caso negativo
   
@@ -42,6 +43,11 @@ Feature: Pagos de Servicios
       Given el usuario no tiene facturas de telefonia pendientes de pago
       When el usuario intenta realizar un pago
       Then el sistema muestra un mensaje indicando que no existe deuda pendiente
+    
+    Scenario: Pago de telefonía rechazado por número de línea inválido
+      Given el usuario ingresa un número de línea de telefonía inexistente
+      When el usuario intenta realizar un pago
+      Then el el sistema rechaza la operación
 
   # TODO: Scenario: edge case
   
