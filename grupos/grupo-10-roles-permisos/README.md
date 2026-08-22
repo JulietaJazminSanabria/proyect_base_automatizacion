@@ -5,7 +5,11 @@
 
 ## Integrantes
 
-- (completar: nombre y email — ver `inscripcion-grupos-bdd2.xlsx`)
+- Mathias Osorio, mathialexoso@gmail.com
+- Nestor Prieto, nestorprieto28@gmail.com
+- Nicole Fernandez, nicole.fernandez.consult@gmail.com
+- Julieta Sanabria, julietajazmin0106@gmail.com
+- Clara Ferreira, monseferreira121@gmail.com
 
 ## Alcance
 
