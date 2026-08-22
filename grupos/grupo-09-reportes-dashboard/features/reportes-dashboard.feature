@@ -21,3 +21,9 @@ Scenario: Generar reporte financiero correctamente
     Given el usuario se encuentra en el modulo de reportes
     When aplica un filtro de fechas donde no existen transacciones registradas
     Then el sistema debe mostrar el mensaje "No se encontraron datos para el periodo seleccionado"
+
+# Scenario 3: Roles
+Scenario: Visualizar indicadores según el rol del usuario
+  Given que el usuario tiene el rol "<rol>"
+  When accede al panel de reportes financieros
+  Then debe visualizar únicamente los indicadores "<indicadores_visibles>"
