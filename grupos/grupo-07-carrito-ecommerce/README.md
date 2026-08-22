@@ -5,7 +5,11 @@
 
 ## Integrantes
 
-- (completar: nombre y email — ver `inscripcion-grupos-bdd2.xlsx`)
+- Juan Barreto	    juan.m.barretog@gmail.com
+- Andrea Escurra    escurracaceres.andy@fpuna.edu.py
+- Emilio Rojas	    emrojazg@gmail.com
+- Armin Avezada     arminavq@gmail.com
+- Felipe Rivas      danirivas64@fpuna.edu.py 
 
 ## Alcance
 
