@@ -73,8 +73,23 @@ Checklist según [ENTREGABLES.md](../../ENTREGABLES.md):
 
 #- [ ] Análisis y alcance
 #- [ ] BDD — `features/` (mínimo 3 escenarios: happy path, negativo, edge case)
-- [ ] API — colección Postman/Newman (si aplica al módulo)
+- [x] API — colección Postman/Newman (si aplica al módulo)
 - [ ] UI — `tests/e2e/` con Playwright
 - [ ] Evidencias en `evidence/`
 - [ ] CI/CD verde
 - [ ] PR a `main` usando la plantilla del repo
+
+
+## Trazabilidad BDD -> API (AIQUAA)
+
+| Escenario BDD | Tipo | Endpoint AIQUAA / Postman | Método | Datos Entrada | Validaciones / Assertions |
+| :--- | :--- | :--- | :---: | :--- | :--- |
+| **Login exitoso con credenciales válidas** | Happy Path | `{{baseUrl}}/api/v1/labs/admin/seed/{{candidateId}}` | `POST` | `documento`, `password` | Status 200, confirma estado activo y genera `sessionId`. |
+| **Solicitud de recuperación con correo no registrado** | Caso Negativo | `{{baseUrl}}/api/v1/auth/forgot-password` | `POST` | `email` no registrado | Status 404, valida mensaje `"Correo no encontrado"`. |
+| **Cierre de sesión con token expirado** | Edge Case | `{{baseUrl}}/api/v1/auth/logout` | `POST` | Header `Authorization` expirado | Status 401, valida mensaje de sesión expirada. |
+
+## Variables de Entorno Utilizadas
+
+* **`baseUrl`**: URL base del servidor de AIQUAA.
+* **`candidateId`**: Identificador asignado para la ejecución del grupo.
+* **`sessionId`**: Token capturado dinámicamente para autenticación.
