@@ -1,11 +1,11 @@
 # Grupo 06 — Notificaciones y Alertas
 # Módulo: Sistema de notificaciones (push/email/SMS)
 #
-# Completar los escenarios BDD de este módulo.
+# Flujo objetivo: notificación multicanal al usuario tras una operación bancaria.
 # Ver ENTREGABLES.md: mínimo 3 escenarios (1 happy path, 1 negativo, 1 edge case).
+# Este archivo entrega 5 escenarios (2 happy path, 1 negativo, 2 edge case).
 
 Feature: Notificaciones y Alertas
-
   Como usuario del sistema
   Quiero recibir alertas sobre mis operaciones
   Para mantenerme informado de manera oportuna y segura
@@ -32,3 +32,20 @@ Feature: Notificaciones y Alertas
     When el sistema procesa dos veces el evento de la transferencia "TRX-003"
     Then el usuario debe recibir una sola notificación push
     And debe existir un único registro de entrega asociado al identificador "TRX-003"
+
+  @happy_path
+  Scenario: Usar email como canal de respaldo cuando el push no puede entregarse
+    Given el usuario tiene habilitadas las notificaciones push y email
+    And el usuario tiene un dispositivo registrado con un token vencido
+    When se confirma una transferencia exitosa de 750000 Gs con el identificador "TRX-004"
+    Then el sistema no debe entregar la notificación push por el token vencido
+    And el sistema debe enviar una notificación por email al usuario
+    And debe registrar el canal push como fallido y el email como entregado
+
+  @edge_case
+  Scenario: Diferir la notificación durante el horario silencioso del usuario
+    Given el usuario tiene habilitadas las notificaciones push
+    And el usuario configuró un horario silencioso entre las 22:00 y las 07:00
+    When se confirma una transferencia exitosa de 500000 Gs con el identificador "TRX-005" a las 23:30
+    Then el sistema no debe enviar la notificación push de inmediato
+    And el sistema debe programar la entrega para las 07:00 del día siguiente

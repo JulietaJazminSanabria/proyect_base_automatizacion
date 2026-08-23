@@ -6,6 +6,7 @@
 ## Integrantes
 
 - (completar: nombre y email — ver `inscripcion-grupos-bdd2.xlsx`)
+- Fernando Servian — fernandosa305@fpuna.edu.py
 
 ## Alcance
 
