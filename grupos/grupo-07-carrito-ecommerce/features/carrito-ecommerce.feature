@@ -36,8 +36,6 @@ Feature: Carrito de Compras / E-commerce
     When confirma la compra
     Then el pedido se registra correctamente
     And el producto queda sin stock disponible
-  # TODO: Scenario: caso negativo
-  # TODO: Scenario: edge case
 
 
 Feature: Agregar producto en stock al carrito
