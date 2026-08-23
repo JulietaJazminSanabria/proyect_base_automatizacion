@@ -6,10 +6,11 @@
 # Este archivo entrega 5 escenarios (1 happy path, 1 alternative path, 1 negativo, 2 edge case).
 
 Feature: Notificaciones y Alertas
+<<<<<<< HEAD
   Como usuario del sistema
   Quiero recibir alertas sobre mis operaciones
   Para mantenerme informado de manera oportuna y segura
-
+  
   @happy_path
   Scenario: Enviar una notificación push después de una transferencia exitosa
     Given el usuario tiene habilitadas las notificaciones push
@@ -65,3 +66,12 @@ Feature: Notificaciones y Alertas
     When se confirma una transferencia exitosa de 600000 Gs con el identificador "TRX-007"
     Then el sistema no debe entregar la notificación por SMS
     And debe registrar el intento de entrega como fallido
+=======
+@alternative_path
+Scenario: Enviar notificaciones por múltiples canales según preferencias del usuario
+  Given el usuario tiene habilitadas las notificaciones push y email
+  When se confirma una transferencia exitosa de 1200000 Gs con el identificador "TRX-009"
+  Then el sistema debe enviar una notificación push al dispositivo registrado
+  And el sistema debe enviar una notificación por email al usuario
+  And debe registrar ambos canales como entregados
+
