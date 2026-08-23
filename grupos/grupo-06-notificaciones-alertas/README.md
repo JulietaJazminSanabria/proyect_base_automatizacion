@@ -6,7 +6,11 @@
 ## Integrantes
 
 - (completar: nombre y email — ver `inscripcion-grupos-bdd2.xlsx`)
+- Fabian Machado — maeze02@gmail.com
 - Fernando Servian — fernandosa305@fpuna.edu.py
+- Karina Bogarin — kariarganha@gmail.com
+- Ana Mendoza — anajazmendoza@gmail.com
+- Madhy Avalos — Magavalos15@gmail.com
 
 ## Alcance
 
