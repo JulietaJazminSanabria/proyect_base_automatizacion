@@ -25,5 +25,5 @@ Feature: Transferencias entre Cuentas
    When el usuario realiza una transferencia a una cuenta de moneda extranjera
    Then el sistema emite un mensaje de error y no permite realizar la transferencia
    And debe visualizar un mensaje de error "La cuenta destino es una cuenta en USD"
-  
+     
    # TODO: Scenario: edge case
