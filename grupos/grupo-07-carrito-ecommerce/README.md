@@ -6,7 +6,7 @@
 ## Integrantes
 
 - Juan Barreto	    juan.m.barretog@gmail.com
-- Andrea Escurra    escurracaceres.andy@fpuna.edu.py
+- Andrea Escurra    escurracaceres.andy@gmail.com
 - Emilio Rojas	    emrojazg@gmail.com
 - Armin Avezada     arminavq@fpuna.edu.py
 - Felipe Rivas      danirivas64@fpuna.edu.py 
