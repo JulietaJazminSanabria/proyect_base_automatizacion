@@ -7,6 +7,7 @@
 
 - Marcos Trinidad ---> (completar email)
 - Rafael Estigarribia ---> (rafaer93@gmail.com)
+- Emilio Oheler ---> (ohelerhernan@gmail.com)
 
 ## Alcance
 

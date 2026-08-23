@@ -9,12 +9,14 @@ Feature: Gestión de tarjetas de crédito/débito
   Quiero realizar gestiones de mis tarjetas de crédito/débito
   Para mantenerme al día con los últimos ajustes de mi tarjeta
 
+  # Scenario: happy path - Emilio Oheler
   Scenario: Ver datos tarjeta
     Given el cliente está autenticado en la app con biometría válida
     And posee una tarjeta de crédito/débito
     When el cliente solicita visualizar los datos de la tarjeta
     Then se muestra el numero de tarjeta, vencimiento y datos adicionales
 
+  # Scenario: happy path - Emilio Oheler
   Scenario: Cambio exitoso de PIN
     When el cliente cambia el PIN actual por un nuevo PIN
     Then el sistema confirma el cambio con el mensaje "PIN actualizado"
