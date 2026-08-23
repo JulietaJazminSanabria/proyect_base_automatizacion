@@ -20,6 +20,7 @@ Feature: Gestión de tarjetas de crédito/débito
     Then el sistema confirma el cambio con el mensaje "PIN actualizado"
     And el nuevo PIN es requerido en la siguiente transacción
 
+  # Scenario: happy path - Rafael Estigarribia
   Scenario: Bloqueo temporal por tarjeta perdida
     When el cliente reporta la tarjeta como "PERDIDA"
     Then la tarjeta queda con estado "BLOQUEO_TEMPORAL"
@@ -27,6 +28,7 @@ Feature: Gestión de tarjetas de crédito/débito
     And las autorizaciones posteriores son rechazadas
     And se genera una notificación correspondiente al cliente
 
+  # Scenario: happy path - Rafael Estigarribia
   Scenario: Desbloqueo exitoso de tarjeta bloqueada
     Given la tarjeta tiene estado "BLOQUEADA" por motivo del "CLIENTE"
     When el cliente solicita el desbloqueo
