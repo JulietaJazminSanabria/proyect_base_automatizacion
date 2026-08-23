@@ -49,3 +49,19 @@ Feature: Notificaciones y Alertas
     When se confirma una transferencia exitosa de 500000 Gs con el identificador "TRX-005" a las 23:30
     Then el sistema no debe enviar la notificación push de inmediato
     And el sistema debe programar la entrega para las 07:00 del día siguiente
+
+ @happy_path
+  Scenario: Enviar una notificación por SMS después de una transferencia exitosa
+    Given el usuario tiene habilitadas las notificaciones por SMS
+    And el usuario tiene un número de teléfono válido registrado
+    When se confirma una transferencia exitosa de 1000000 Gs con el identificador "TRX-006"
+    Then el sistema debe enviar una notificación por SMS al número registrado
+    And la notificación debe incluir el monto y el identificador de la transferencia
+
+ @negative
+  Scenario: No enviar una notificación por SMS cuando el número de teléfono es inválido
+    Given el usuario tiene habilitadas las notificaciones por SMS
+    And el usuario tiene un número de teléfono inválido registrado
+    When se confirma una transferencia exitosa de 600000 Gs con el identificador "TRX-007"
+    Then el sistema no debe entregar la notificación por SMS
+    And debe registrar el intento de entrega como fallido
