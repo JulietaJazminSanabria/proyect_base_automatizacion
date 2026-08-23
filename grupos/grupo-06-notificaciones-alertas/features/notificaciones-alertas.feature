@@ -3,7 +3,7 @@
 #
 # Flujo objetivo: notificación multicanal al usuario tras una operación bancaria.
 # Ver ENTREGABLES.md: mínimo 3 escenarios (1 happy path, 1 negativo, 1 edge case).
-# Este archivo entrega 5 escenarios (2 happy path, 1 negativo, 2 edge case).
+# Este archivo entrega 5 escenarios (1 happy path, 1 alternative path, 1 negativo, 2 edge case).
 
 Feature: Notificaciones y Alertas
   Como usuario del sistema
@@ -33,7 +33,7 @@ Feature: Notificaciones y Alertas
     Then el usuario debe recibir una sola notificación push
     And debe existir un único registro de entrega asociado al identificador "TRX-003"
 
-  @happy_path
+  @alternative_path
   Scenario: Usar email como canal de respaldo cuando el push no puede entregarse
     Given el usuario tiene habilitadas las notificaciones push y email
     And el usuario tiene un dispositivo registrado con un token vencido
