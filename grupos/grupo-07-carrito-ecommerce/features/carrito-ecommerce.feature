@@ -36,3 +36,38 @@ Feature: Carrito de Compras / E-commerce
     When confirma la compra
     Then el pedido se registra correctamente
     And el producto queda sin stock disponible
+  # TODO: Scenario: caso negativo
+  # TODO: Scenario: edge case
+
+
+Feature: Agregar producto en stock al carrito
+
+Como usuario del e-commerce
+Quiero agregar productos disponibles al carrito
+Para realizar una compra de los productos seleccionados
+
+# Scenario: happy path - Armin Avezada Aquino
+Scenario: Agregar producto disponible al carrito
+Given el usuario se encuentra en la página de productos
+And existe un producto disponible con stock
+When selecciona el producto y lo agrega al carrito
+Then el producto debe ser agregado correctamente al carrito
+And la cantidad del producto en el carrito debe ser 1
+And el stock disponible del producto debe actualizarse correctamente
+
+# Scenario: caso negativo - Armin Avezada Aquino
+Scenario: Intentar agregar un producto sin stock al carrito
+Given el usuario se encuentra en la página de productos
+And existe un producto sin stock disponible
+When intenta agregar el producto al carrito
+Then el producto no debe ser agregado al carrito
+And debe visualizar un mensaje indicando que el producto no está disponible
+
+# Scenario: edge case- Armin Avezada Aquino
+Scenario: Agregar al carrito la cantidad máxima disponible en stock
+Given el usuario se encuentra en la página de productos
+And existe un producto con una cantidad limitada de stock
+When agrega al carrito una cantidad igual al stock disponible
+Then el producto debe ser agregado correctamente al carrito
+And la cantidad agregada debe coincidir con el stock disponible
+And el producto no debe permitir agregar una cantidad superior al stock disponible
