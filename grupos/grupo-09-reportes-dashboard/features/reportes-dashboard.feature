@@ -34,3 +34,20 @@ Scenario: Comparacion de reportes entre dos periodos distintos
   Given el usuario se encuentra en el modulo de reportes
   When selecciona dos periodos y solicita compararlos
   Then el sistema debe mostrar un reporte comparativo con las diferencias porcentuales
+Caso Positivo -Claudio Cabrera
+Escenario: Visualizar reporte financiero del mes 
+Dado que el usuario ha iniciado sesión
+Cuando consulta el reporte financiero del mes actual
+Entonces se cargan las métricas y gráficos del panel de control.
+
+Caso Negativo -Claudio Cabrera
+Escenario: Consultar reporte en un período sin datos 
+Dado que el usuario ha iniciado sesión
+Cuando filtra el reporte para un año sin transacciones
+Entonces se muestra un mensaje de "Sin datos disponibles".
+
+Caso Limite - Claudio Cabrera
+Escenario: Filtrar el rango máximo de años permitido 
+Dado que el usuario ha iniciado sesión
+Cuando selecciona un rango de fechas de 10 años
+Entonces el reporte se genera agrupando los datos sin dar error de tiempo de espera.
