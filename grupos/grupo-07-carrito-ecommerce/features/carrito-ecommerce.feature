@@ -94,3 +94,28 @@ Feature: Eliminar producto del carrito   - Andrea Escurra
     And hago doble clic sobre el boton eliminar del item ya removido
     Then el sistema no muestra errores
     And el carrito permanece vacio con total 0
+
+
+
+# Scenario: Aplicar un cupón de descuento válido al carrito (happy path) - Emilio Rojas
+    Given el usuario tiene productos agregados en el carrito
+    And dispone de un cupón de descuento válido "DESC10"
+    When ingresa el código del cupón "DESC10"
+    And aplica el cupón al carrito
+    Then el sistema aplica un descuento del 10% sobre el total de la compra
+    And muestra el mensaje "Cupón aplicado correctamente"
+
+# Scenario: Aplicar un cupón vencido (caso negativo) - Emilio Rojas
+    Given el usuario tiene productos agregados en el carrito
+    And dispone de un cupón vencido "DESC2024"
+    When ingresa el código del cupón "DESC2024"
+    And aplica el cupón al carrito
+    Then el sistema muestra el mensaje "Cupón vencido"
+    And el total de la compra permanece sin cambios
+
+# Scenario: Aplicar el mismo cupón dos veces (edge case) - Emilio Rojas
+    Given el usuario tiene productos agregados en el carrito
+    And ya aplicó el cupón "DESC10"
+    When intenta aplicar nuevamente el cupón "DESC10"
+    Then el sistema muestra el mensaje "El cupón ya fue utilizado"
+    And el descuento se aplica una sola vez
