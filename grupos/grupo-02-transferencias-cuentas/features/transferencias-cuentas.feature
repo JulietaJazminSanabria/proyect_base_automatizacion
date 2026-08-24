@@ -11,7 +11,6 @@ Feature: Transferencias entre Cuentas
 
   # TODO: Scenario: happy path
   Scenario: Transferencia entre cuentas de distintas monedas
-
     Given el cliente tiene una cuenta origen en "<Moneda_Origen>" con un saldo de <Saldo_Inicial_Origen>
     And tiene una cuenta destino en "<Moneda_Destino>" con un saldo de <Saldo_Inicial_Destino>
     And la tasa de cambio actual de "<Moneda_Origen>" a "<Moneda_Destino>" es de <Tasa_Cambio>
