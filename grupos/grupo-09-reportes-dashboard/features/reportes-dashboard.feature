@@ -9,6 +9,7 @@ Feature: Reportes y Dashboard
   # TODO: Scenario: happy path
   # TODO: Scenario: caso negativo
   # TODO: Scenario: edge case
+  # Todo: Scenario: Comparativa
 
 # Scenario 1: happy path
 Scenario: Generar reporte financiero correctamente
