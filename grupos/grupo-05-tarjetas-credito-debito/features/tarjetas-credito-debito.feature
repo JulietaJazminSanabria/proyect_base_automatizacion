@@ -38,12 +38,14 @@ Feature: Gestión de tarjetas de crédito/débito
     Then la tarjeta queda con estado "ACTIVA"
     And el sistema confirma el desbloqueo por el medio de notificacion optado por el cliente
 
+  # Scenario: happy path - Ivan Bolaños
   Scenario: Aumento exitoso de límite diario de compras
     When el cliente modifica el límite "compras_comercio" a un monto diario superior
     And confirma con OTP válido
     Then el nuevo límite diario queda confirmado
     And el cambio es efectivo inmediatamente para nuevas autorizaciones
 
+  # Scenario: happy path - Ivan Bolaños
   Scenario: Pago exitoso desde cuenta propia
     When el cliente paga un monto generado a la tarjeta desde su cuenta vista
     Then el pago se registra con estado "APROBADA"

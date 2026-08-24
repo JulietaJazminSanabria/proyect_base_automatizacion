@@ -39,7 +39,7 @@
 Checklist según [ENTREGABLES.md](../../ENTREGABLES.md):
 
 - [x] Análisis y alcance
-- [x] BDD — `features/` (happy path y caso negativo cubiertos; falta 1 edge case)
+- [x] BDD — `features/` (happy path caso negativo, y ed case cubiertos)
 - [ ] API — colección Postman/Newman
 - [ ] UI — `tests/e2e/` con Playwright
 - [ ] Evidencias en `evidence/`
