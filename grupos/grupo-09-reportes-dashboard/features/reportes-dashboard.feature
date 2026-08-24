@@ -27,3 +27,9 @@ Scenario: Visualizar indicadores según el rol del usuario
   Given que el usuario tiene el rol "<rol>"
   When accede al panel de reportes financieros
   Then debe visualizar únicamente los indicadores "<indicadores_visibles>"
+  
+#Scenario 4: Comparativa
+Scenario: Comparacion de reportes entre dos periodos distintos
+  Given el usuario se encuentra en el modulo de reportes
+  When selecciona dos periodos y solicita compararlos
+  Then el sistema debe mostrar un reporte comparativo con las diferencias porcentuales
