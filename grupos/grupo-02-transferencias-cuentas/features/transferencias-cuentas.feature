@@ -10,6 +10,15 @@ Feature: Transferencias entre Cuentas
   Para mover dinero de forma segura dentro del mismo banco
 
   # TODO: Scenario: happy path
+  Scenario: Transferencia entre cuentas de distintas monedas
+    Given el cliente tiene una cuenta origen en "<Moneda_Origen>" con un saldo de <Saldo_Inicial_Origen>
+    And tiene una cuenta destino en "<Moneda_Destino>" con un saldo de <Saldo_Inicial_Destino>
+    And la tasa de cambio actual de "<Moneda_Origen>" a "<Moneda_Destino>" es de <Tasa_Cambio>
+    When el cliente confirma una transferencia de <Monto_Transferir> desde la cuenta origen a la cuenta destino
+    Then el saldo de la cuenta origen debería disminuir a <Saldo_Final_Origen>
+    And el saldo de la cuenta destino debería aumentar a <Saldo_Final_Destino>
+    And el sistema debe generar un comprobante mostrando la tasa aplicada de <Tasa_Cambio>
+
 
   # TODO: Scenario: caso negativo
   Scenario: Transferencia rechazada por saldo insuficiente
@@ -18,7 +27,8 @@ Feature: Transferencias entre Cuentas
     When intenta realizar una transferencia por un monto mayor al saldo disponible
     Then la transferencia debe ser rechazada
     And debe visualizar un mensaje indicando saldo insuficiente
-  
+    
+
    # TODO: Scenario: edge case
    # TODO: Scenario: caso negativo
 Scenario: Rechazar una transferencia hacia una cuenta bloqueada
