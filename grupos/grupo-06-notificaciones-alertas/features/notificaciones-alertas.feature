@@ -2,15 +2,14 @@
 # Módulo: Sistema de notificaciones (push/email/SMS)
 #
 # Flujo objetivo: notificación multicanal al usuario tras una operación bancaria.
-# Ver ENTREGABLES.md: mínimo 3 escenarios (1 happy path, 1 negativo, 1 edge case).
-# Este archivo entrega 5 escenarios (1 happy path, 1 alternative path, 1 negativo, 2 edge case).
+# Este archivo entrega 8 escenarios:
+# 2 happy path, 2 alternative path, 2 negativos y 2 edge case.
 
 Feature: Notificaciones y Alertas
-<<<<<<< HEAD
   Como usuario del sistema
   Quiero recibir alertas sobre mis operaciones
   Para mantenerme informado de manera oportuna y segura
-  
+
   @happy_path
   Scenario: Enviar una notificación push después de una transferencia exitosa
     Given el usuario tiene habilitadas las notificaciones push
@@ -51,7 +50,7 @@ Feature: Notificaciones y Alertas
     Then el sistema no debe enviar la notificación push de inmediato
     And el sistema debe programar la entrega para las 07:00 del día siguiente
 
- @happy_path
+  @happy_path
   Scenario: Enviar una notificación por SMS después de una transferencia exitosa
     Given el usuario tiene habilitadas las notificaciones por SMS
     And el usuario tiene un número de teléfono válido registrado
@@ -59,19 +58,20 @@ Feature: Notificaciones y Alertas
     Then el sistema debe enviar una notificación por SMS al número registrado
     And la notificación debe incluir el monto y el identificador de la transferencia
 
- @negative
+  @negative
   Scenario: No enviar una notificación por SMS cuando el número de teléfono es inválido
     Given el usuario tiene habilitadas las notificaciones por SMS
     And el usuario tiene un número de teléfono inválido registrado
     When se confirma una transferencia exitosa de 600000 Gs con el identificador "TRX-007"
     Then el sistema no debe entregar la notificación por SMS
     And debe registrar el intento de entrega como fallido
-=======
-@alternative_path
-Scenario: Enviar notificaciones por múltiples canales según preferencias del usuario
-  Given el usuario tiene habilitadas las notificaciones push y email
-  When se confirma una transferencia exitosa de 1200000 Gs con el identificador "TRX-009"
-  Then el sistema debe enviar una notificación push al dispositivo registrado
-  And el sistema debe enviar una notificación por email al usuario
-  And debe registrar ambos canales como entregados
+
+  @alternative_path
+  Scenario: Enviar notificaciones por múltiples canales según las preferencias del usuario
+    Given el usuario tiene habilitadas las notificaciones push y email
+    And el usuario tiene un dispositivo y un correo electrónico válidos registrados
+    When se confirma una transferencia exitosa de 1200000 Gs con el identificador "TRX-009"
+    Then el sistema debe enviar una notificación push al dispositivo registrado
+    And el sistema debe enviar una notificación por email al usuario
+    And debe registrar ambos canales como entregados
 
