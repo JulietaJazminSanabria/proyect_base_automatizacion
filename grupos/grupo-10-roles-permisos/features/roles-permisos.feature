@@ -27,3 +27,20 @@ Feature: Administración de Roles y Permisos
     When intenta aprobar un desembolso por el monto límite exacto de "USD 49.999"
     Then el sistema procesa la transacción exitosamente
     And no solicita la autorización de un Gerente de Sucursal
+  Scenario: Usuario con rol limitado intenta ejecutar una accion sobre el limite permitido
+    Given que el usuario autenticado en el backoffice tiene el rol "Operador"
+    When intenta ejecutar una accion que excede el limite permitido para su rol
+    Then el sistema rechaza la accion
+    And solicita la autorizacion de un usuario con rol "Administrador"
+
+  Scenario: Intento de asignar un rol inexistente a un usuario interno
+    Given que un administrador esta creando un nuevo usuario interno
+    When intenta asignarle un rol que no existe en el sistema
+    Then el sistema rechaza la asignacion
+    And muestra un mensaje indicando que el rol no es valido
+
+  Scenario: Usuario interno queda sin ningun rol asignado
+    Given que un administrador edita un usuario interno existente
+    When remueve el unico rol que tenia asignado sin seleccionar uno nuevo
+    Then el sistema no permite guardar los cambios
+    And muestra un mensaje solicitando que se asigne al menos un rol
