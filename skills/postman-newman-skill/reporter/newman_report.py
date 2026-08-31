@@ -146,6 +146,32 @@ def safe_json(raw):
         return raw
 
 
+def build_url(url_obj):
+    """Reconstruye la URL completa. El export json de Newman no siempre
+    trae url.raw -- solo protocol/host[]/path[]/query[] sueltos."""
+    if not url_obj:
+        return ""
+    if not isinstance(url_obj, dict):
+        return str(url_obj)
+    if url_obj.get("raw"):
+        return url_obj["raw"]
+
+    protocol = url_obj.get("protocol", "")
+    host = ".".join(str(h) for h in url_obj.get("host", []))
+    path = "/".join(str(p) for p in url_obj.get("path", []))
+
+    url = f"{protocol}://{host}" if protocol and host else host
+    if path:
+        url += f"/{path}"
+
+    query = [q for q in url_obj.get("query", []) if not q.get("disabled")]
+    if query:
+        qs = "&".join(f"{q.get('key', '')}={q.get('value', '')}" for q in query)
+        url += f"?{qs}"
+
+    return url
+
+
 # ─── Parser Newman ────────────────────────────────────────────────────────────
 def parse_newman_results(data):
     run  = data.get("run", {})
@@ -175,8 +201,7 @@ def parse_newman_results(data):
         resp    = ex.get("response", {})
         asserts = ex.get("assertions", [])
 
-        url_obj = req.get("url", {})
-        url = url_obj.get("raw", "") if isinstance(url_obj, dict) else str(url_obj)
+        url = build_url(req.get("url", {}))
 
         resp_body = ""
         if resp:
