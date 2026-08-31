@@ -34,13 +34,26 @@ jobs:
           --env-var "baseUrl=${{ vars.GRUPO07_BASE_URL }}"
           --env-var "apiKey=${{ secrets.GRUPO07_API_KEY }}"
           --delay-request 500
-          --reporters cli,junit
+          --reporters cli,junit,htmlextra
           --reporter-junit-export newman/report.xml
+          --reporter-htmlextra-export newman/report.html
+          --reporter-htmlextra-title "Grupo 07 - Regresion Carrito"
 
-      - name: Subir reporte Newman
+      - name: Instalar Chromium (Playwright) para exportar PDF
+        if: always()
+        run: npx playwright install --with-deps chromium
+
+      - name: Generar PDF del reporte Newman
+        if: always()
+        run: node scripts/newman-html-to-pdf.mjs newman/report.html newman/report.pdf
+
+      - name: Subir reporte Newman (JUnit, HTML, PDF)
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: newman-report-grupo07
-          path: newman/report.xml
+          path: |
+            newman/report.xml
+            newman/report.html
+            newman/report.pdf
           retention-days: 7

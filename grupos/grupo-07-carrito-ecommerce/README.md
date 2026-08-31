@@ -55,7 +55,11 @@ manual vía `workflow_dispatch`). Requiere configurar en el repo
   (ej. `https://aiquaa-sandbox-api.vercel.app`).
 - **Secret** `GRUPO07_API_KEY` — API key para el header `x-api-key`.
 
-El resultado (reporte JUnit) queda como artifact `newman-report-grupo07` del run.
+El run sube el artifact `newman-report-grupo07` con tres formatos del mismo resultado: JUnit
+(`report.xml`, para integrarse con dashboards de CI), HTML (`report.html`, reporte navegable con
+`newman-reporter-htmlextra`) y PDF (`report.pdf`, generado a partir del HTML con Playwright/Chromium
+vía [`scripts/newman-html-to-pdf.mjs`](../../scripts/newman-html-to-pdf.mjs) — reutilizable por
+`npm run newman:report:pdf -- <html> <pdf>` para cualquier otra colección del repo).
 
 > **Nota:** la key de demo del sandbox tiene rate-limit propio (`429 RATE_LIMITED`); el workflow
 > agrega `--delay-request 500` para mitigarlo. Con una key dedicada del equipo (sin ese límite
