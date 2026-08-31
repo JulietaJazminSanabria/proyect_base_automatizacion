@@ -44,6 +44,27 @@ cd agente-ia
 BASE_URL=http://localhost:3001 API_KEY=TU_API_KEY node agent.mjs
 ```
 
+## CI: regresión Postman automática
+
+El workflow [`postman-grupo07-regression.yml`](../../.github/workflows/postman-grupo07-regression.yml)
+corre esta colección con Newman en GitHub Actions (push/PR a `main` que toquen la colección, o
+manual vía `workflow_dispatch`). Requiere configurar en el repo
+(Settings → Secrets and variables → Actions):
+
+- **Variable** `GRUPO07_BASE_URL` — URL del backend desplegado de `aiquaa-sandbox-api`
+  (ej. `https://aiquaa-sandbox-api.vercel.app`).
+- **Secret** `GRUPO07_API_KEY` — API key para el header `x-api-key`.
+
+El resultado (reporte JUnit) queda como artifact `newman-report-grupo07` del run.
+
+> **Nota:** la key de demo del sandbox tiene rate-limit propio (`429 RATE_LIMITED`); el workflow
+> agrega `--delay-request 500` para mitigarlo. Con una key dedicada del equipo (sin ese límite
+> compartido) la corrida debería ser estable. Además, al validar contra el backend desplegado se
+> detectaron un par de asserts de `pm.test` en la colección (regex `.to.match(...)` aplicado sobre
+> el objeto `error` en vez de `error.message`) que fallan por una discrepancia de shape entre lo que
+> esperan los tests y la respuesta real de la API — no es un problema del workflow, sino de los
+> test-scripts de la colección; queda pendiente de ajuste por el equipo.
+
 ## Entregables (checklist ENTREGABLES.md)
 - [x] Análisis y alcance (este README + feature)
 - [x] BDD — `features/` (18 escenarios: happy path, negativo, edge case)
