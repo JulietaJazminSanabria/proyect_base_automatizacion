@@ -139,9 +139,28 @@ def truncate_body(text, max_chars=600):
     return text[:max_chars] + f"\n... [{len(text)-max_chars} caracteres omitidos]"
 
 
+def deep_parse_json(value):
+    """Parsea recursivamente strings que a su vez son JSON (comun en
+    campos tipo error.details que la API serializa como string escapado)
+    para que salgan indentados en vez de una sola linea con \\n literales."""
+    if isinstance(value, str):
+        s = value.strip()
+        if s[:1] in ("{", "["):
+            try:
+                return deep_parse_json(json.loads(s))
+            except Exception:
+                pass
+        return value
+    if isinstance(value, dict):
+        return {k: deep_parse_json(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [deep_parse_json(v) for v in value]
+    return value
+
+
 def safe_json(raw):
     try:
-        return json.dumps(json.loads(raw), indent=2, ensure_ascii=False)
+        return json.dumps(deep_parse_json(json.loads(raw)), indent=2, ensure_ascii=False)
     except Exception:
         return raw
 
