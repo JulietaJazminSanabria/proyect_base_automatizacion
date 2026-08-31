@@ -55,7 +55,8 @@ jobs:
           --logo-postman skills/postman-newman-skill/reporter/assets/logo_postman_clean.png
           --repo-url "${{ github.server_url }}/${{ github.repository }}"
           --api-version "${{ github.sha }}"
-          --author "GitHub Actions - ${{ github.workflow }}"
+          --author "${{ github.triggering_actor }}"
+          --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           --output newman/report.pdf
 
       - name: Subir informe PDF de la regresión

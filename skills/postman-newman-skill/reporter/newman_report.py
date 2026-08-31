@@ -274,7 +274,7 @@ class ReportCanvas:
 
 
 # ─── Portada ──────────────────────────────────────────────────────────────────
-def build_cover(summary, logo_postman, logo_aiquaa, styles, api_version=None, repo_url=None, banner=None, author=None):
+def build_cover(summary, logo_postman, logo_aiquaa, styles, api_version=None, repo_url=None, banner=None, author=None, run_url=None):
     story = []
     w_content = PAGE_W - 2 * MARGIN
 
@@ -380,9 +380,14 @@ def build_cover(summary, logo_postman, logo_aiquaa, styles, api_version=None, re
         else:
             ver_display = api_version
         meta.insert(2, ["Versión / release", ver_display])
+    if author:
+        meta.append(["Ejecutado por", author])
     if repo_url:
         meta.append(["Repositorio",
                      f'<font color="#0D1B40"><u>{repo_url}</u></font>'])
+    if run_url:
+        meta.append(["Ejecución CI",
+                     f'<font color="#0D1B40"><u>{run_url}</u></font>'])
     meta_table = Table(
         [[Paragraph(r[0], styles["cover_meta_key"]),
           Paragraph(r[1], styles["cover_meta_val"])] for r in meta],
@@ -497,7 +502,7 @@ def build_results(executions, styles):
 def generate_report(results_path, output_path,
                     logo_aiquaa=None, logo_postman=None,
                     api_version=None, repo_url=None,
-                    banner=None, author=None):
+                    banner=None, author=None, run_url=None):
     with open(results_path, encoding="utf-8") as f:
         data = json.load(f)
 
@@ -516,7 +521,7 @@ def generate_report(results_path, output_path,
 
     story  = build_cover(summary, logo_postman, logo_aiquaa, styles,
                      api_version=api_version, repo_url=repo_url,
-                     banner=banner, author=author)
+                     banner=banner, author=author, run_url=run_url)
     story += build_results(executions, styles)
 
     doc.build(story, onFirstPage=on_page, onLaterPages=on_page)
@@ -555,6 +560,9 @@ if __name__ == "__main__":
     parser.add_argument("--author",
                         default=None,
                         help="Nombre y/o email del creador de la automatización (opcional)")
+    parser.add_argument("--run-url",
+                        default=None,
+                        help="URL de la ejecución de CI que genero este informe (opcional)")
     args = parser.parse_args()
 
     # Derivar nombre de salida desde la colección si no se pasó --output
@@ -578,4 +586,5 @@ if __name__ == "__main__":
         repo_url=args.repo_url,
         banner=args.banner,
         author=args.author,
+        run_url=args.run_url,
     )
