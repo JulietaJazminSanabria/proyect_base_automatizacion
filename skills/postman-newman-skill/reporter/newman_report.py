@@ -155,6 +155,7 @@ def parse_newman_results(data):
 
     total_assert  = stats.get("assertions", {}).get("total", 0)
     failed_assert = stats.get("assertions", {}).get("failed", 0)
+    now = datetime.now()
 
     summary = {
         "collection_name": info.get("name", "N/A"),
@@ -163,7 +164,8 @@ def parse_newman_results(data):
         "failed_tests":    failed_assert,
         "passed_tests":    total_assert - failed_assert,
         "duration_ms":     timings.get("completed", 0) - timings.get("started", 0),
-        "timestamp":       datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "fecha":           now.strftime("%d/%m/%Y"),
+        "hora":            now.strftime("%H:%M:%S"),
     }
 
     executions = []
@@ -367,9 +369,12 @@ def build_cover(summary, logo_postman, logo_aiquaa, styles, api_version=None, re
     result_col = GREEN_PASS if failed == 0 else RED_FAIL
     result_txt = "APROBADO" if failed == 0 else "FALLIDO"
 
+    dur_display = f"{dur/1000:,.2f} s ({dur:,} ms)" if dur >= 1000 else f"{dur} ms"
+
     meta = [
-        ["Fecha / hora",  summary["timestamp"]],
-        ["Duración",      f"{dur:,} ms"],
+        ["Fecha",             summary["fecha"]],
+        ["Hora",              summary["hora"]],
+        ["Tiempo de ejecución", dur_display],
         ["Resultado",
          f'<font color="{result_col.hexval()}"><b>{result_txt}</b></font>'],
     ]
@@ -379,7 +384,7 @@ def build_cover(summary, logo_postman, logo_aiquaa, styles, api_version=None, re
             ver_display = f'<font color="#0D1B40"><u>{api_version}</u></font>'
         else:
             ver_display = api_version
-        meta.insert(2, ["Versión / release", ver_display])
+        meta.insert(3, ["Versión / release", ver_display])
     if author:
         meta.append(["Ejecutado por", author])
     if repo_url:
