@@ -124,28 +124,13 @@ def method_pill(method):
     )
 
 
-def status_badge(passed, failed):
+def status_info(passed, failed):
     if failed > 0:
-        text, col, bg = "FALLIDO", RED_FAIL, RED_BG
+        return "FALLIDO", RED_FAIL, RED_BG
     elif passed > 0:
-        text, col, bg = "APROBADO", GREEN_PASS, GREEN_BG
+        return "APROBADO", GREEN_PASS, GREEN_BG
     else:
-        text, col, bg = "OMITIDO", YELLOW_SKIP, GRAY_LIGHT
-    return Table(
-        [[Paragraph(
-            f'<font color="{col.hexval()}"><b>{text}</b></font>',
-            ParagraphStyle("b", fontName="Helvetica-Bold", fontSize=9,
-                           textColor=col, alignment=TA_CENTER)
-        )]],
-        colWidths=[22*mm],
-        style=TableStyle([
-            ("BACKGROUND",    (0,0), (-1,-1), bg),
-            ("TOPPADDING",    (0,0), (-1,-1), 2),
-            ("BOTTOMPADDING", (0,0), (-1,-1), 2),
-            ("LEFTPADDING",   (0,0), (-1,-1), 6),
-            ("RIGHTPADDING",  (0,0), (-1,-1), 6),
-        ])
-    )
+        return "OMITIDO", YELLOW_SKIP, GRAY_LIGHT
 
 
 def truncate_body(text, max_chars=600):
@@ -196,6 +181,8 @@ def parse_newman_results(data):
             raw = resp.get("body", "") or resp.get("stream", {})
             if isinstance(raw, dict):
                 raw = raw.get("data", b"")
+            if isinstance(raw, list):
+                raw = bytes(raw)
             if isinstance(raw, (bytes, bytearray)):
                 try:
                     raw = raw.decode("utf-8")
@@ -439,18 +426,25 @@ def build_results(executions, styles):
         block = []
 
         # Encabezado
+        badge_text, badge_col, badge_bg = status_info(passed, failed)
+        badge_style = ParagraphStyle(
+            "badge", fontName="Helvetica-Bold", fontSize=9,
+            textColor=badge_col, alignment=TA_CENTER, leading=11,
+        )
         header = Table(
             [[method_pill(ex["method"]),
               Paragraph(f'<b>{i}. {ex["name"]}</b>', styles["req_name"]),
-              status_badge(passed, failed)]],
-            colWidths=[16*mm, w_content - 42*mm, 24*mm],
+              Paragraph(badge_text, badge_style)]],
+            colWidths=[16*mm, w_content - 46*mm, 30*mm],
             style=TableStyle([
                 ("VALIGN",        (0,0), (-1,-1), "MIDDLE"),
+                ("ALIGN",         (2,0), (2,0), "CENTER"),
                 ("LEFTPADDING",   (0,0), (-1,-1), 4),
                 ("RIGHTPADDING",  (0,0), (-1,-1), 4),
                 ("TOPPADDING",    (0,0), (-1,-1), 6),
                 ("BOTTOMPADDING", (0,0), (-1,-1), 6),
-                ("BACKGROUND",    (0,0), (-1,-1), GRAY_LIGHT),
+                ("BACKGROUND",    (0,0), (1,0), GRAY_LIGHT),
+                ("BACKGROUND",    (2,0), (2,0), badge_bg),
                 ("BOX",           (0,0), (-1,-1), 0.5, GRAY_BORDER),
             ])
         )
