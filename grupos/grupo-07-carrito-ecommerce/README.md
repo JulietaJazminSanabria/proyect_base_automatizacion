@@ -55,19 +55,17 @@ manual vía `workflow_dispatch`). Requiere configurar en el repo
   (ej. `https://aiquaa-sandbox-api.vercel.app`).
 - **Secret** `GRUPO07_API_KEY` — API key para el header `x-api-key`.
 
-El run sube el artifact `newman-report-grupo07` con tres formatos del mismo resultado: JUnit
-(`report.xml`, para integrarse con dashboards de CI), HTML (`report.html`, reporte navegable con
-`newman-reporter-htmlextra`) y PDF (`report.pdf`, generado a partir del HTML con Playwright/Chromium
-vía [`scripts/newman-html-to-pdf.mjs`](../../scripts/newman-html-to-pdf.mjs) — reutilizable por
-`npm run newman:report:pdf -- <html> <pdf>` para cualquier otra colección del repo).
+El run sube un único artifact **`informe-regresion-grupo07`** con el PDF de resultados
+(`report.pdf`), generado con el reporter de
+[`skills/postman-newman-skill/reporter/newman_report.py`](../../skills/postman-newman-skill/reporter/newman_report.py)
+(reportlab + Pillow) a partir del `--reporter-json-export` de Newman: portada con banner/logos,
+estadísticas (peticiones/pruebas/aprobadas/fallidas) y detalle por request (método, URL, status,
+tiempo, cada `pm.test` con su resultado y el cuerpo de respuesta). Sin HTML ni XML intermedios en
+el artifact — solo el PDF.
 
 > **Nota:** la key de demo del sandbox tiene rate-limit propio (`429 RATE_LIMITED`); el workflow
-> agrega `--delay-request 500` para mitigarlo. Con una key dedicada del equipo (sin ese límite
-> compartido) la corrida debería ser estable. Además, al validar contra el backend desplegado se
-> detectaron un par de asserts de `pm.test` en la colección (regex `.to.match(...)` aplicado sobre
-> el objeto `error` en vez de `error.message`) que fallan por una discrepancia de shape entre lo que
-> esperan los tests y la respuesta real de la API — no es un problema del workflow, sino de los
-> test-scripts de la colección; queda pendiente de ajuste por el equipo.
+> usa `--delay-request 800` para evitarlo. Con una key dedicada del equipo (sin ese límite
+> compartido) la corrida debería ser estable y más rápida.
 
 ## Entregables (checklist ENTREGABLES.md)
 - [x] Análisis y alcance (este README + feature)

@@ -25,35 +25,43 @@ jobs:
         with:
           node-version: 20
 
-      - name: Instalar dependencias
+      - name: Configurar Python (generador de PDF)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependencias Node
         run: npm install
+
+      - name: Instalar dependencias Python (reportlab, Pillow)
+        run: pip install -r skills/postman-newman-skill/reporter/requirements.txt
 
       - name: Ejecutar regresión Postman (Newman) - Grupo 07
         run: >
           npx newman run postman/grupo-07-carrito-ecommerce.postman_collection.json
           --env-var "baseUrl=${{ vars.GRUPO07_BASE_URL }}"
           --env-var "apiKey=${{ secrets.GRUPO07_API_KEY }}"
-          --delay-request 500
-          --reporters cli,junit,htmlextra
-          --reporter-junit-export newman/report.xml
-          --reporter-htmlextra-export newman/report.html
-          --reporter-htmlextra-title "Grupo 07 - Regresion Carrito"
+          --delay-request 800
+          --reporters cli,json
+          --reporter-json-export newman/results.json
 
-      - name: Instalar Chromium (Playwright) para exportar PDF
+      - name: Generar reporte PDF
         if: always()
-        run: npx playwright install --with-deps chromium
+        run: >
+          python skills/postman-newman-skill/reporter/newman_report.py
+          --results newman/results.json
+          --banner skills/postman-newman-skill/reporter/assets/banner_portada.png
+          --logo-aiquaa skills/postman-newman-skill/reporter/assets/logo_aiquaa_circle.png
+          --logo-postman skills/postman-newman-skill/reporter/assets/logo_postman_clean.png
+          --repo-url "${{ github.server_url }}/${{ github.repository }}"
+          --api-version "${{ github.sha }}"
+          --author "GitHub Actions - ${{ github.workflow }}"
+          --output newman/report.pdf
 
-      - name: Generar PDF del reporte Newman
-        if: always()
-        run: node scripts/newman-html-to-pdf.mjs newman/report.html newman/report.pdf
-
-      - name: Subir reporte Newman (JUnit, HTML, PDF)
+      - name: Subir informe PDF de la regresión
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: newman-report-grupo07
-          path: |
-            newman/report.xml
-            newman/report.html
-            newman/report.pdf
+          name: informe-regresion-grupo07
+          path: newman/report.pdf
           retention-days: 7

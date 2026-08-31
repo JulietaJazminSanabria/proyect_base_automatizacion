@@ -10,14 +10,12 @@
     "test:api": "newman run postman/AIQUAA-Lab-Template.postman_collection.json -e postman/local.postman_environment.json",
     "test:bdd": "cucumber-js \"features/**/*.feature\" \"grupos/**/*.feature\"",
     "smoke": "playwright test tests/e2e/smoke.spec.ts",
-    "verify": "npm run test:api && npm run test:e2e",
-    "newman:report:pdf": "node scripts/newman-html-to-pdf.mjs"
+    "verify": "npm run test:api && npm run test:e2e"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^11.0.1",
     "@playwright/test": "^1.54.2",
     "dotenv": "^17.2.3",
-    "newman": "^6.2.1",
-    "newman-reporter-htmlextra": "^1.23.1"
+    "newman": "^6.2.1"
   }
 }
