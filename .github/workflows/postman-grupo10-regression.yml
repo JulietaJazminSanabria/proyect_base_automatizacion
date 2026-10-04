@@ -2,7 +2,7 @@ name: Postman Regression - Grupo 10 Roles y Permisos
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "grupo-10-roles-permisos"]
     paths:
       - "postman/Grupo-10-Administracion-Roles-Permisos.postman_collection.json"
       - "postman/Grupo-10-Administracion-Roles-Permisos.postman_environment.json"
