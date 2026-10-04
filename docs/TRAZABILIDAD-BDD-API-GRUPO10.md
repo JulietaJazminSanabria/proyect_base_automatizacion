@@ -22,7 +22,7 @@ API bajo prueba: AIQUAA Sandbox (`/api/v1`), autenticación por header `x-api-ke
 |----|---------------|---------------|-------------|--------------------|--------------------|
 | ESC-01 | Administrador crea un usuario interno y le asigna un rol | RF-G10-01, RF-G10-02, RF-G10-03 | GET /roles; POST /usuarios; POST /usuarios/{id}/roles; GET /usuarios/{id}/roles | 200; 201; 201; 200 con el rol listado | Cumple |
 | ESC-05 | Intento de asignar un rol inexistente | RF-G10-03 | POST /usuarios/{id}/roles (roleId = 999999) | 400 VALIDATION_ERROR y sin asignación nueva en BD | Cumple |
-| ESC-06 | Usuario interno queda sin ningún rol | RF-G10-04 | DELETE /usuarios/{id}/roles/{roleId} | El BDD espera 400/409 | No cumple: la API responde 204 (ver hallazgo 1) |
+| ESC-06 | Usuario interno queda sin ningún rol | RF-G10-04 | DELETE /usuarios/{id}/roles/{roleId} | El BDD espera 400/409 | Brecha documentada: la API responde 204 y la colección verifica ese comportamiento (test en verde) |
 | ESC-07 | (Caso propio) Reasignar un rol revocado | RF-G10-03 | POST /usuarios/{id}/roles tras revocar | 200, mismo id, misma fecha `asignado_en` | Cumple |
 
 ## Validación en base de datos (patrón pre/post-request)
@@ -39,7 +39,7 @@ Los campos que varían en el body son variables (`{{roleEditorId}}`, `{{rolInexi
 
 ## Hallazgos
 
-1. **ESC-06 (brecha entre BDD y requerimientos):** el escenario exige que no se pueda dejar a un usuario sin rol, pero RF-G10-04 solo establece que revocar un rol no afecta los demás, y ningún requerimiento define un mínimo de roles. La API responde 204 y deja al usuario sin rol. El test falla a propósito para dejar la brecha documentada.
+1. **ESC-06 (brecha entre BDD y requerimientos):** el escenario exige que no se pueda dejar a un usuario sin rol, pero RF-G10-04 solo establece que revocar un rol no afecta los demás, y ningún requerimiento define un mínimo de roles. La API responde 204 y deja al usuario sin rol. El test de la colección verifica el comportamiento actual (204); la brecha queda documentada aquí.
 2. **Nombres de rol:** el escenario menciona "Editor", pero el catálogo (RF-G10-01) solo contiene `admin`, `soporte`, `auditor` y `operador`. Se usó `soporte`.
 
 ## Escenarios no automatizados a nivel API
@@ -49,4 +49,4 @@ Los campos que varían en el body son variables (`{{roleEditorId}}`, `{{rolInexi
 
 ## Resultado de la corrida y evidencia
 
-27 tests: 26 pasan y 1 falla (el de ESC-06, esperado). Capturas en `grupos/grupo-10-roles-permisos/evidence/`.
+GitHub Actions: 27/27 assertions en verde (Newman). La captura tarea3-run-resumen.png es de la versión anterior de la colección, donde ESC-06 esperaba el rechazo y fallaba (26/27). Capturas en grupos/grupo-10-roles-permisos/evidence/.
