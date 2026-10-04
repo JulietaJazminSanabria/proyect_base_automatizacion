@@ -1,6 +1,7 @@
-# Trazabilidad inicial BDD → API — Grupo 10 (Roles y Permisos)
+# Trazabilidad BDD → API — Grupo 10 (Roles y Permisos)
 
 Feature: `grupos/grupo-10-roles-permisos/features/roles-permisos.feature`
+Requerimientos: `docs/requerimientos` (RF-G10-01 a RF-G10-08)
 Colección: `postman/Grupo10_Roles_Permisos.postman_collection.json`
 API bajo prueba: AIQUAA Sandbox (`/api/v1`), autenticación por header `x-api-key`
 
@@ -15,24 +16,37 @@ API bajo prueba: AIQUAA Sandbox (`/api/v1`), autenticación por header `x-api-ke
 | usuarioId, roleEditorId | Se capturan automáticamente de las respuestas |
 | emailUnico, documentoUnico | Se generan en el pre-request para evitar duplicados (409) |
 
-## Mapeo de escenarios
+## Mapeo de escenarios BDD → API
 
-| ID | Escenario BDD | Endpoint(s) | Datos de entrada | Resultado esperado | Resultado obtenido |
-|----|---------------|-------------|------------------|--------------------|--------------------|
-| ESC-01 | Administrador crea un usuario interno y le asigna un rol exitosamente | GET /api/v1/roles; POST /api/v1/usuarios; POST /api/v1/usuarios/{id}/roles; GET /api/v1/usuarios/{id}/roles | email y documento únicos, rol `soporte` | 200; 201; 201; 200 con el rol listado; tiempo < 3000 ms | Cumple (4/4 requests, todos los tests PASS) |
-| ESC-05 | Intento de asignar un rol inexistente | POST /api/v1/usuarios/{id}/roles | roleId = 999999 | 400 (o 404) con `error.message` | Cumple (3/3 tests PASS) |
-| ESC-06 | Usuario interno queda sin ningún rol asignado | DELETE /api/v1/usuarios/{id}/roles/{roleId} | único rol del usuario | 400/409: el sistema no permite dejar al usuario sin rol | **No cumple**: la API responde 204 y deja al usuario sin rol |
+| ID | Escenario BDD | Requerimiento | Endpoint(s) | Resultado esperado | Resultado obtenido |
+|----|---------------|---------------|-------------|--------------------|--------------------|
+| ESC-01 | Administrador crea un usuario interno y le asigna un rol | RF-G10-01, RF-G10-02, RF-G10-03 | GET /roles; POST /usuarios; POST /usuarios/{id}/roles; GET /usuarios/{id}/roles | 200; 201; 201; 200 con el rol listado | Cumple |
+| ESC-05 | Intento de asignar un rol inexistente | RF-G10-03 | POST /usuarios/{id}/roles (roleId = 999999) | 400 VALIDATION_ERROR y sin asignación nueva en BD | Cumple |
+| ESC-06 | Usuario interno queda sin ningún rol | RF-G10-04 | DELETE /usuarios/{id}/roles/{roleId} | El BDD espera 400/409 | No cumple: la API responde 204 (ver hallazgo 1) |
+| ESC-07 | (Caso propio) Reasignar un rol revocado | RF-G10-03 | POST /usuarios/{id}/roles tras revocar | 200, mismo id, misma fecha `asignado_en` | Cumple |
+
+## Validación en base de datos (patrón pre/post-request)
+
+El helper `utils.bodySqlRest(sql, params)` está declarado una sola vez en el Pre-request Script de la colección y consulta la BD con `POST /api/v1/sql/select` (solo lectura).
+
+| Request | Pre-request (consulta a la BD) | Post-response (consulta a la BD) |
+|---|---|---|
+| 3. Asignar rol | `COUNT` de asignaciones vigentes del par usuario-rol = 0 | La fila existe con `activo = true` |
+| Asignar rol que no existe (negativo) | `COUNT` de asignaciones del usuario antes del intento | El `COUNT` no cambió: el rechazo no insertó nada |
+| Reactivar asignación revocada | Lee `id`, `activo` y `asignado_en` de la fila revocada | Sigue habiendo una sola fila, `activo = true`, mismo `id` y misma `asignado_en` |
+
+Los campos que varían en el body son variables (`{{roleEditorId}}`, `{{rolInexistenteId}}`); el resto del JSON queda legible.
 
 ## Hallazgos
 
-1. **ESC-06 (edge case):** el BDD exige que el sistema impida quitar el único rol de un usuario, pero la API (`DELETE /usuarios/{id}/roles/{roleId}`) solo documenta 204 y 404; no existe validación de "al menos un rol". Se registra como hallazgo para el equipo.
-2. **Nombres de rol:** el BDD menciona el rol "Editor", pero la API solo define `admin`, `soporte`, `auditor` y `operador`. Se usó `soporte` como equivalente para la prueba. Conviene alinear los escenarios BDD con los roles reales.
+1. **ESC-06 (brecha entre BDD y requerimientos):** el escenario exige que no se pueda dejar a un usuario sin rol, pero RF-G10-04 solo establece que revocar un rol no afecta los demás, y ningún requerimiento define un mínimo de roles. La API responde 204 y deja al usuario sin rol. El test falla a propósito para dejar la brecha documentada.
+2. **Nombres de rol:** el escenario menciona "Editor", pero el catálogo (RF-G10-01) solo contiene `admin`, `soporte`, `auditor` y `operador`. Se usó `soporte`.
 
-## Escenarios no mapeados a API
+## Escenarios no automatizados a nivel API
 
-- Operador sin permisos para crear usuarios, y acción sobre el límite permitido: se validan por UI; la API autentica con API key, no según el rol del usuario.
+- Operador sin permisos y acción sobre el límite permitido: la sección 8 de los requerimientos indica que los roles no otorgan ni restringen nada y ningún endpoint verifica el rol antes de operar.
 - Cajero con desembolso de USD 49.999: no existe un endpoint de desembolsos en este módulo.
 
-## Evidencia
+## Resultado de la corrida y evidencia
 
-Capturas en `grupos/grupo-10-roles-permisos/evidence/` (corrida de Postman: 17/18 tests; el que falla corresponde al hallazgo de ESC-06).
+27 tests: 26 pasan y 1 falla (el de ESC-06, esperado). Capturas en `grupos/grupo-10-roles-permisos/evidence/`.
