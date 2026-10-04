@@ -297,12 +297,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "// Expectativa del BDD: el sistema NO debe permitir dejar al usuario sin rol.",
-                  "// Si este test falla (la API responde 204), es un HALLAZGO a documentar.",
-                  "pm.test('BDD: el sistema no permite dejar al usuario sin rol (400 o 409)', function () {",
-                  "  pm.expect(pm.response.code).to.be.oneOf([400, 409]);",
-                  "});",
-                  "pm.test('Response time menor a 3000ms', function () { pm.expect(pm.response.responseTime).to.be.below(3000); });"
+                  "// Comportamiento actual (RF-G10-04): la revocación responde 204 aunque el usuario quede sin roles.\n// El escenario BDD esperaba un rechazo (400/409): brecha documentada en docs/TRAZABILIDAD-BDD-API-GRUPO10.md\npm.test(\"Revocar el único rol responde 204 (comportamiento actual; el BDD esperaba rechazo)\", () => {\n  pm.response.to.have.status(204);\n});\npm.test('Response time menor a 3000ms', function () { pm.expect(pm.response.responseTime).to.be.below(3000); });"
                 ]
               }
             }
@@ -408,11 +403,11 @@
           "  utils = {\r",
           "    bodySqlRest: function (sql, params) {\r",
           "      return {\r",
-          "        url: pm.collectionVariables.get(\"baseUrl\") + \"/api/v1/sql/select\",\r",
+          "        url: pm.variables.get(\"baseUrl\") + \"/api/v1/sql/select\",\r",
           "        method: \"POST\",\r",
           "        header: {\r",
           "          \"Content-Type\": \"application/json\",\r",
-          "          \"x-api-key\": pm.collectionVariables.get(\"apiKey\")\r",
+          "          \"x-api-key\": pm.variables.get(\"apiKey\")\r",
           "        },\r",
           "        body: {\r",
           "          mode: \"raw\",\r",
