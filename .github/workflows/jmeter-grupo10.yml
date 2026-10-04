@@ -26,6 +26,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: grupo10-sandbox-jmeter
@@ -35,7 +36,7 @@ jobs:
   performance:
     name: Grupo 10 - JMeter con limites, PDF y Grafana
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 45
     env:
       DURATION: ${{ inputs.duration || '480' }}
       THINK_TIME: ${{ inputs.think_time || '3000' }}
@@ -52,7 +53,21 @@ jobs:
         run: |
           curl --fail --location --silent --show-error https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.3.tgz -o jmeter.tgz
           tar -xzf jmeter.tgz
-
+      - name: Esperar una ventana limpia (clave compartida)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          WF_NAME: ${{ github.workflow }}
+        run: |
+          QUIET=0
+          for i in $(seq 1 60); do
+            OTHERS=$(gh run list --repo "$GITHUB_REPOSITORY" --limit 50 --json databaseId,status,workflowName --jq '[.[] | select((.status=="in_progress" or .status=="queued" or .status=="pending") and (.databaseId != ($ENV.RUN_ID|tonumber)) and (.workflowName != $ENV.WF_NAME) and (.workflowName | test("JMeter|Postman|Newman"; "i")))] | length')
+            echo "Intento $i: otras pruebas activas = $OTHERS"
+            if [ "$OTHERS" = "0" ]; then QUIET=$((QUIET+1)); else QUIET=0; fi
+            if [ "$QUIET" -ge 3 ]; then echo "Ventana limpia"; exit 0; fi
+            sleep 20
+          done
+          echo "::warning::No hubo ventana limpia en 20 minutos; se ejecuta igual y puede haber 429."
       - name: Ejecutar JMeter sin interfaz grafica
         env:
           API_KEY: ${{ secrets.GRUPO10_API_KEY }}
@@ -104,7 +119,10 @@ jobs:
             --output test-results/performance/evidence/EVIDENCIA_MONITOREO.png \
             --wait-seconds 8 \
             --ready-timeout-seconds 180
-
+      - name: Parche temporal del generador de PDF (bug con throughput bajo)
+        run: |
+          sed -i 's/ticks\.push(Math\.round(v))/ticks.push(Math.round(v * 1000) \/ 1000)/' mcp/dist/reporting/pdf-kit.js
+          grep -n "Math.round(v \* 1000)" mcp/dist/reporting/pdf-kit.js || echo "::warning::No se pudo aplicar el parche"
       - name: Generar el informe PDF
         continue-on-error: true
         run: |
