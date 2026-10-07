@@ -42,7 +42,7 @@ permisos adecuados puedan crear, editar o eliminar usuarios internos.
 
 ## CI: regresion Postman
 
-El workflow [postman-grupo10-regression.yml](../../.github/workflows/postman-grupo10-regression.yml)
+El workflow [postman-grupo10-regression-julieta.yml](../../.github/workflows/postman-grupo10-regression-julieta.yml)
 ejecuta la coleccion con Newman y genera un informe PDF con el reporter Python compartido.
 El artifact `informe-regresion-grupo10` queda disponible en cada ejecucion de Actions por 7 dias.
 Se activa manualmente o al abrir un PR/actualizar `main` con cambios en los archivos Postman,
